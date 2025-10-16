@@ -1,0 +1,98 @@
+.loginsignup {
+    width: 100%;
+    height: 100vh; /* Full viewport height */
+    background: #fce3fe; /* Light purple/pink background */
+    padding-top: 50px; /* Space from the top */
+    /* You might use flexbox to center it perfectly if this is the only element on the page */
+    display: flex;
+    justify-content: center;
+}
+
+.loginsignup-container {
+    width: 580px; /* Max width of the form container */
+    background: white;
+    margin: auto; /* Centers the container horizontally */
+    padding: 40px 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 8px; /* Rounded corners */
+}
+
+.loginsignup-container h1 {
+    margin: 20px 0;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.loginsignup-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 30px; /* Space between input fields */
+    margin-top: 30px;
+}
+
+.loginsignup-fields input {
+    height: 50px;
+    width: 100%;
+    padding-left: 20px;
+    border: 1px solid #c9c9c9;
+    outline: none; /* Removes default focus outline */
+    color: #5c5c5c;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+.loginsignup-container button {
+    width: 100%;
+    height: 50px;
+    color: white;
+    background: #e44d4c; /* Red color from the image */
+    margin-top: 30px;
+    border: none;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.loginsignup-container button:hover {
+    background: #d43a3a; /* Slightly darker on hover */
+}
+
+.loginsignup-login {
+    margin-top: 20px;
+    color: #5c5c5c;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.loginsignup-login span {
+    color: #e44d4c; /* Match the button color */
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.loginsignup-agree {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+    gap: 10px; /* Space between checkbox and text */
+    color: #5c5c5c;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.loginsignup-agree input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Optional: Media query for smaller screens */
+@media (max-width: 700px) {
+    .loginsignup-container {
+        width: 90%;
+        padding: 20px 30px;
+    }
+}

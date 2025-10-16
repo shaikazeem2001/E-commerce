@@ -1,0 +1,27 @@
+/* index.css */
+
+/* Reset default spacing and box sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Set body base style */
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+    overflow-x: hidden; /* Prevent horizontal scrollbar */
+  }
+  
+  /* Make images responsive by default */
+  img {
+    max-width: 100%;
+    display: block;
+  }
+  
+  /* Optional: smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  

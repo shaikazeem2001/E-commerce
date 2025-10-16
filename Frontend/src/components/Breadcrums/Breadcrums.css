@@ -1,0 +1,4 @@
+.breadcrum{
+    display: flex;
+    flex-direction: row;
+}
