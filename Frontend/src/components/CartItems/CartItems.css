@@ -207,23 +207,14 @@
   }
   
   @media screen and (max-width: 500px) {
-    .cartitems-format-main,
+    .cartitems-format-main {
+      grid-template-columns: 0.5fr 3fr 0.5fr; 
+      gap: 10px;
+      display: none;
+    }
+    
     .cartitems-format {
-      grid-template-columns: 1fr 1fr;
-      text-align: left;
-    }
-  
-    .carticon-product-icon {
-      width: 60px;
-      height: 60px;
-    }
-  
-    .cartitems-promobox {
-      flex-direction: column;
-    }
-  
-    .cartitems-promobox button {
-      width: 100%;
+      display: grid;
     }
   }
   

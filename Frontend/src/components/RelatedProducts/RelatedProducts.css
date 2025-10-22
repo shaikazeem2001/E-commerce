@@ -3,21 +3,72 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  height: 90vh;
+  height: auto; /* Change from fixed 90vh to auto for responsiveness */
+  padding: 40px 20px;
+  overflow-x: hidden;
 }
+
 .related-products h1 {
   color: #171717;
   font-size: 50px;
   font-weight: 600;
+  text-align: center;
 }
+
 .related-products hr {
   width: 200px;
   height: 6px;
   border-radius: 10px;
   background: #252525;
 }
+
 .relatedproducts-item {
   margin-top: 50px;
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 30px;
+  justify-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* ✅ Medium screens (tablets, iPads) */
+@media (max-width: 1024px) {
+  .relatedproducts-item {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+  }
+
+  .related-products h1 {
+    font-size: 40px;
+  }
+}
+
+/* ✅ Small screens (phones in landscape or small tablets) */
+@media (max-width: 768px) {
+  .relatedproducts-item {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .related-products h1 {
+    font-size: 32px;
+  }
+}
+
+/* ✅ Very small screens (mobile portrait, iPhone 14 etc.) */
+@media (max-width: 480px) {
+  .relatedproducts-item {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .related-products h1 {
+    font-size: 26px;
+  }
+
+  .related-products hr {
+    width: 150px;
+    height: 3px;
+  }
 }
