@@ -1,0 +1,82 @@
+/* ✅ Use correct class name (matches your React component) */
+.list-products {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 740px;
+    padding: 20px 50px;
+    margin: 30px auto;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    overflow-x: auto;
+  }
+  
+  /* ✅ Grid layout for product list header */
+  .listproduct-fromat-main {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    padding: 15px 0;
+    color: #454545; /* ✅ fixed typo J#454545 */
+    font-size: 15px;
+    font-weight: 600;
+    border-bottom: 2px solid #eee;
+  }
+  
+  /* ✅ Product rows */
+  .listproduct-format {
+    display: grid;
+    grid-template-columns: 1fr 3fr 1fr 1fr 1fr 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    font-weight: 500;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  /* ✅ Product image */
+  .listproduct-product-icon {
+    height: 80px;
+    width: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  /* ✅ Remove icon */
+  .list-remove-icon {
+    cursor: pointer;
+    height: 20px;
+    width: 20px;
+    margin: auto;
+    transition: 0.2s ease;
+  }
+  
+  .list-remove-icon:hover {
+    transform: scale(1.1);
+  }
+  
+  /* ✅ Mobile responsiveness */
+  @media (max-width: 800px) {
+    .list-products {
+      width: 95%;
+      height: auto;
+      padding: 10px 20px;
+      margin: 20px auto;
+    }
+  
+    .listproduct-fromat-main,
+    .listproduct-format {
+      grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr;
+      font-size: 12px;
+      gap: 5px;
+    }
+  
+    .listproduct-product-icon {
+      height: 50px;
+      width: 50px;
+    }
+  }
+  

@@ -1,0 +1,105 @@
+.addproduct {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 20px;
+    padding: 40px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: black;
+    width: 900px;
+    margin: 40px auto;
+  }
+  
+  .addproduct-itemfield {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .addproduct-itemfield p {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .addproduct-itemfield input,
+  .add-product-selector {
+    padding: 10px 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+  
+  .addproduct-itemfield input:focus,
+  .add-product-selector:focus {
+    border-color: #007bff;
+  }
+  
+  .add-product-selector {
+    background-color: #fff;
+    cursor: pointer;
+  }
+  
+  .add-product-itemfield {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .addproduct-thumbnail-img {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    border: 2px dashed #aaa;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .addproduct-thumbnail-img:hover {
+    border-color: #007bff;
+    transform: scale(1.03);
+  }
+  
+  .add-product-btn {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+  }
+  
+  .add-product-btn:hover {
+    background-color: #0056b3;
+  }
+  
+  /* 🔹 Responsive Design */
+  @media (max-width: 600px) {
+    .addproduct {
+      padding: 20px;
+      max-width: 90%;
+    }
+  
+    .addproduct-thumbnail-img {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .add-product-btn {
+      font-size: 15px;
+    }
+  }
+  
