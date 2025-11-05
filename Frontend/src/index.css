@@ -1,8 +1,8 @@
 
   /* Set body base style */
   body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #fff;
+    font-family: "Roboto", sans-serif;
+     background-color: #fff;
     overflow-x: hidden; /* Prevent horizontal scrollbar */
   }
   

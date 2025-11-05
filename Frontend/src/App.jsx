@@ -1,7 +1,7 @@
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
 import { Route,Routes } from 'react-router-dom'
-import ShopCatogory from './pages/ShopCatogory'
+import ShopCategory from './pages/ShopCategory'
 import Cart from './pages/Cart'
 import LoginSignup from './pages/LoginSignup'
 import Product from './pages/Product'
@@ -18,9 +18,9 @@ function App() {
       <Navbar/>
     <Routes>
       <Route path='/' element={<Shop/>}/>
-      <Route path='/mens' element={<ShopCatogory banner={men_banner} catogory='men'/>}/>
-      <Route path='/women' element={<ShopCatogory banner={women_banner} catogory='women'/>}/>
-      <Route path='/kids' element={<ShopCatogory banner={kids_banner} catogory='kid'/>}/>
+      <Route path='/mens' element={<ShopCategory banner={men_banner} category='men'/>}/>
+      <Route path='/women' element={<ShopCategory banner={women_banner} category='women'/>}/>
+      <Route path='/kids' element={<ShopCategory banner={kids_banner} category='kid'/>}/>
       <Route path="/product/:productID" element={<Product />} />
       <Route path='cart' element={<Cart/>}/>
       <Route path='login' element={<LoginSignup/>}/>

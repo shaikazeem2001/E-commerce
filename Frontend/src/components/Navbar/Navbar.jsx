@@ -20,7 +20,7 @@ const Navbar = () => {
       <div className="nav-logo">
       <Link to='/'> <img src={logo} alt="" /></Link>
       <Link to='/' style={{ textDecoration: 'none' }}>
-  <p>Trend</p></Link>
+      <p>Trend</p></Link>
       </div>
       <img className='nav-dropdown' onClick={dropdown_toggle} src={dropdown_icon} alt="" />
       <div ref={menuRef} className="nav-menu">
@@ -30,7 +30,8 @@ const Navbar = () => {
         <li onClick={(()=>{setMenu('kids')})}><Link style={{textDecoration:'none'}} to='/kids'>Kids</Link> {menu==='kids'? <hr/> :<></>}</li>
       </div>
       <div className="nav-login-cart">
-       <Link to='/login'><button>Login</button></Link> 
+        {localStorage.getItem('set-token')?
+        <button onClick={()=>{localStorage.removeItem('set-token');window.location.replace('/')}}>Logout</button>:<Link to='/login'><button>Login</button></Link> }
        <Link to='/cart'><img src={carticon} alt="" /></Link> 
         <div className="nav-cart-count">{getTotalCartItems()}</div>
       </div>
