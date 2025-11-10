@@ -27,7 +27,7 @@ const LoginSignup = () => {
       .then((data) => (responseData = data));
 
       if(responseData.success){
-        localStorage.setItem('set-token',responseData.token)
+        localStorage.setItem('auth-token',responseData.token)
         window.location.replace('/');
       }
       else{
@@ -49,7 +49,7 @@ const LoginSignup = () => {
       .then((data) => (responseData = data));
 
       if(responseData.success){
-        localStorage.setItem('set-token',responseData.token)
+        localStorage.setItem('auth-token',responseData.token)
         window.location.replace('/');
       }
       else{
