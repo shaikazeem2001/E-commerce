@@ -1,43 +1,52 @@
-const port = 4000;
+require('dotenv').config(); // ✅ load .env variables
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
 
+const app = express();
+const port = process.env.PORT || 4000;        // ✅ server port
+const MONGO_URI = process.env.MONGODB_URI;    // ✅ MongoDB URI
+const JWT_SECRET = process.env.JWT_SECRET;    // ✅ JWT secret
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Log requests
+app.use((req, res, next) => {
+  console.log(`\n🔍 Incoming Request: ${req.method} ${req.path}`);
+  console.log("Headers:", req.headers);
+  console.log("Body:", req.body);
+  next();
+});
+
 // ✅ MongoDB connection
 mongoose
-  .connect("mongodb+srv://shaikazeem:shaikazeem007@cluster0.afk8wdq.mongodb.net/Ecommerce")
+  .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.log(err));
-
-// ✅ Start server
-app.listen(port, (error) => {
-  if (!error) console.log(`🚀 Server running on port ${port}`);
-  else console.log("Error: " + error);
-});
+  .catch((err) => console.log("❌ MongoDB Connection Error:", err));
 
 // ✅ Multer setup
 const storage = multer.diskStorage({
-  destination: "./upload/images",
+  destination: path.join(__dirname, "upload/images"), // absolute path
   filename: (req, file, cb) => {
     cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
   },
 });
 const upload = multer({ storage });
-app.use("/images", express.static("upload/images"));
 
-// ✅ Upload route
+// ✅ Serve static images
+app.use("/images", express.static(path.join(__dirname, "upload/images")));
+
+// ✅ Upload route (dynamic URL)
 app.post("/upload", upload.single("image"), (req, res) => {
+  const fullUrl = req.protocol + "://" + req.get("host"); // dynamic host
   res.json({
     success: true,
-    image_url: `http://localhost:${port}/images/${req.file.filename}`,
+    image_url: `${fullUrl}/images/${req.file.filename}`,
   });
 });
 
@@ -77,7 +86,7 @@ app.post("/signup", async (req, res) => {
   });
 
   await newUser.save();
-  const token = jwt.sign({ user: { id: newUser._id } }, "secret_ecom");
+  const token = jwt.sign({ user: { id: newUser._id } }, JWT_SECRET);
   res.json({ success: true, token });
 });
 
@@ -89,7 +98,7 @@ app.post("/login", async (req, res) => {
   const match = req.body.password === user.password;
   if (!match) return res.json({ success: false, error: "Wrong password" });
 
-  const token = jwt.sign({ user: { id: user._id } }, "secret_ecom");
+  const token = jwt.sign({ user: { id: user._id } }, JWT_SECRET);
   res.json({ success: true, token });
 });
 
@@ -134,7 +143,7 @@ const fetchuser = async (req, res, next) => {
   if (!token) return res.status(401).json({ error: "No token, access denied" });
 
   try {
-    const data = jwt.verify(token, "secret_ecom");
+    const data = jwt.verify(token, JWT_SECRET);
     req.user = data.user;
     next();
   } catch {
@@ -144,11 +153,27 @@ const fetchuser = async (req, res, next) => {
 
 // ✅ Cart APIs
 app.post("/addtocart", fetchuser, async (req, res) => {
-  const user = await User.findById(req.user.id);
-  if (!user.cartData) user.cartData = {};
-  user.cartData[req.body.itemId] = (user.cartData[req.body.itemId] || 0) + 1;
-  await user.save();
-  res.json({ success: true, message: "Item added to cart" });
+  try {
+    console.log("\n=== ADD TO CART REQUEST ===");
+    console.log("📦 Item ID:", req.body.itemId);
+    console.log("👤 User ID:", req.user.id);
+    console.log("📝 Full request body:", req.body);
+    
+    const user = await User.findById(req.user.id);
+    if (!user.cartData) user.cartData = {};
+    user.cartData[req.body.itemId] = (user.cartData[req.body.itemId] || 0) + 1;
+    user.markModified("cartData");
+    await user.save();
+    
+    console.log("✅ Cart updated successfully");
+    const nonZeroItems = Object.entries(user.cartData).filter(([id, qty]) => qty > 0);
+    console.log("🛒 Non-zero cart items:", nonZeroItems)
+    console.log("===========================\n");
+    res.json({ success: true, message: "Item added to cart" });
+  } catch (error) {
+    console.error("❌ Error in addtocart:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 app.post("/removefromcart", fetchuser, async (req, res) => {
@@ -168,3 +193,6 @@ app.get("/allproducts", async (req, res) => {
   const allProducts = await Product.find({});
   res.json(allProducts);
 });
+
+// ✅ Start server
+app.listen(port, () => console.log(`🚀 Server running on port ${port}`));
