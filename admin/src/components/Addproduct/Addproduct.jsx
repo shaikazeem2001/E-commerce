@@ -23,7 +23,7 @@ const Addproduct = () => {
       const formdata = new FormData();
       formdata.append("image", Image); 
 
-      const uploadResp = await fetch("http://localhost:4000/upload", {
+      const uploadResp = await fetch("https://e-commerce-production-687b.up.railway.app/upload", {
         method: "POST",
         body: formdata, 
       });
@@ -39,7 +39,7 @@ const Addproduct = () => {
 
         console.log("Adding product:", product);
 
-        const addResp = await fetch("http://localhost:4000/addproduct", {
+        const addResp = await fetch("https://e-commerce-production-687b.up.railway.app/addproduct", {
           method: "POST",
           headers: {
             Accept: "application/json",
