@@ -17,7 +17,7 @@ const Shopcontextprovider = (props) => {
 
   // Fetch all products
   useEffect(() => {
-    fetch("https://e-commerce-production-e398.up.railway.app/allproducts")
+    fetch("https://e-commerce-production-687b.up.railway.app/allproducts")
       .then((res) => res.json())
       .then((data) => setall_product(data))
       .catch((err) => console.error("❌ Fetch products error:", err));
@@ -30,7 +30,7 @@ const Shopcontextprovider = (props) => {
       return;
     }
 
-    fetch("https://e-commerce-production-e398.up.railway.app/getcart", {
+    fetch("https://e-commerce-production-687b.up.railway.app/getcart", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -48,7 +48,7 @@ const Shopcontextprovider = (props) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
 
     if (authToken) {
-      fetch("https://e-commerce-production-e398.up.railway.app/addtocart", {
+      fetch("https://e-commerce-production-687b.up.railway.app/addtocart", {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -67,7 +67,7 @@ const Shopcontextprovider = (props) => {
   const removeFromCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
     if (authToken) {
-      fetch("https://e-commerce-production-e398.up.railway.app/removefromcart", {
+      fetch("https://e-commerce-production-687b.up.railway.app/removefromcart", {
         method: "POST",
         headers: {
           Accept: "application/json",
