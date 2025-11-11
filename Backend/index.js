@@ -43,7 +43,7 @@ app.use("/images", express.static(path.join(__dirname, "upload/images")));
 
 // ✅ Upload route (dynamic URL)
 app.post("/upload", upload.single("image"), (req, res) => {
-  const fullUrl = req.protocol + "://" + req.get("host"); // dynamic host
+  const fullUrl = `https://${req.get("host")}`; // Force HTTPS
   res.json({
     success: true,
     image_url: `${fullUrl}/images/${req.file.filename}`,
@@ -196,3 +196,25 @@ app.get("/allproducts", async (req, res) => {
 
 // ✅ Start server
 app.listen(port, () => console.log(`🚀 Server running on port ${port}`));
+// Add this temporary endpoint to fix existing products
+app.get("/fix-images", async (req, res) => {
+  try {
+    const products = await Product.find({});
+    let updated = 0;
+    
+    for (let product of products) {
+      if (product.image && product.image.startsWith('http://')) {
+        product.image = product.image.replace('http://', 'https://');
+        await product.save();
+        updated++;
+      }
+    }
+    
+    res.json({ 
+      success: true, 
+      message: `Updated ${updated} products to use HTTPS` 
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
