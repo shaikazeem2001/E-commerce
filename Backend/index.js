@@ -11,8 +11,11 @@ const port = process.env.PORT || 4000;        // ✅ server port
 const MONGO_URI = process.env.MONGODB_URI;    // ✅ MongoDB URI
 const JWT_SECRET = process.env.JWT_SECRET;    // ✅ JWT secret
 
-app.use(cors());
-app.use(express.json());
+app.use(cors({
+  origin: "*", // allow all origins
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true
+}));app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Log requests
