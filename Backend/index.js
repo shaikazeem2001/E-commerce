@@ -222,3 +222,35 @@ app.get("/fix-images", async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
+
+
+// ✅ Temporary route to fix old image URLs in the database
+app.get("/fix-images", async (req, res) => {
+  try {
+    const products = await Product.find({});
+    let updated = 0;
+
+    for (let product of products) {
+      if (
+        product.image &&
+        (product.image.includes("localhost") || product.image.startsWith("http://"))
+      ) {
+        // Replace old URL with your deployed Railway backend domain
+        product.image = product.image.replace(
+          /http:\/\/localhost:\d+\/images/g,
+          "https://e-commerce-production-687b.up.railway.app/images"
+        );
+        product.image = product.image.replace("http://", "https://");
+        await product.save();
+        updated++;
+      }
+    }
+
+    res.json({
+      success: true,
+      message: `✅ Updated ${updated} product image URLs to use HTTPS and Railway domain`,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
