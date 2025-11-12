@@ -1,29 +1,36 @@
-require('dotenv').config(); // ✅ load .env variables
+require('dotenv').config();
 const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const cors = require("cors");
+const cloudinary = require('cloudinary').v2;
 
 const app = express();
-const port = process.env.PORT || 4000;        // ✅ server port
-const MONGO_URI = process.env.MONGODB_URI;    // ✅ MongoDB URI
-const JWT_SECRET = process.env.JWT_SECRET;    // ✅ JWT secret
+const port = process.env.PORT || 4000;
+const MONGO_URI = process.env.MONGODB_URI;
+const JWT_SECRET = process.env.JWT_SECRET;
 
-app.use("/images", express.static("upload/images"));
+// ✅ Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// ✅ CORS and middleware
 app.use(cors({
-  origin: "*", // allow all origins
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
-}));app.use(express.json());
+}));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Log requests
 app.use((req, res, next) => {
   console.log(`\n🔍 Incoming Request: ${req.method} ${req.path}`);
-  console.log("Headers:", req.headers);
-  console.log("Body:", req.body);
   next();
 });
 
@@ -33,25 +40,36 @@ mongoose
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.log("❌ MongoDB Connection Error:", err));
 
-// ✅ Multer setup
+// ✅ Multer setup (temporary local storage before uploading to Cloudinary)
 const storage = multer.diskStorage({
-  destination: path.join(__dirname, "upload/images"), // absolute path
+  destination: path.join(__dirname, "upload/images"),
   filename: (req, file, cb) => {
     cb(null, `${file.fieldname}_${Date.now()}${path.extname(file.originalname)}`);
   },
 });
 const upload = multer({ storage });
 
-// ✅ Serve static images
-app.use("/images", express.static(path.join(__dirname, "upload/images")));
-
-// ✅ Upload route (dynamic URL)
-app.post("/upload", upload.single("image"), (req, res) => {
-  const fullUrl = `https://${req.get("host")}`; // Force HTTPS
-  res.json({
-    success: true,
-    image_url: `${fullUrl}/images/${req.file.filename}`,
-  });
+// ✅ ONLY ONE UPLOAD ROUTE - with Cloudinary
+app.post("/upload", upload.single("image"), async (req, res) => {
+  try {
+    console.log("📤 Uploading to Cloudinary...");
+    
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "ecommerce-products",
+      resource_type: "auto"
+    });
+    
+    console.log("✅ Cloudinary URL:", result.secure_url);
+    
+    res.json({
+      success: true,
+      image_url: result.secure_url  // Permanent Cloudinary URL
+    });
+  } catch (error) {
+    console.error("❌ Upload error:", error);
+    res.status(500).json({ success: false, error: error.message });
+  }
 });
 
 // ✅ Schemas
@@ -158,21 +176,11 @@ const fetchuser = async (req, res, next) => {
 // ✅ Cart APIs
 app.post("/addtocart", fetchuser, async (req, res) => {
   try {
-    console.log("\n=== ADD TO CART REQUEST ===");
-    console.log("📦 Item ID:", req.body.itemId);
-    console.log("👤 User ID:", req.user.id);
-    console.log("📝 Full request body:", req.body);
-    
     const user = await User.findById(req.user.id);
     if (!user.cartData) user.cartData = {};
     user.cartData[req.body.itemId] = (user.cartData[req.body.itemId] || 0) + 1;
     user.markModified("cartData");
     await user.save();
-    
-    console.log("✅ Cart updated successfully");
-    const nonZeroItems = Object.entries(user.cartData).filter(([id, qty]) => qty > 0);
-    console.log("🛒 Non-zero cart items:", nonZeroItems)
-    console.log("===========================\n");
     res.json({ success: true, message: "Item added to cart" });
   } catch (error) {
     console.error("❌ Error in addtocart:", error);
@@ -200,57 +208,3 @@ app.get("/allproducts", async (req, res) => {
 
 // ✅ Start server
 app.listen(port, () => console.log(`🚀 Server running on port ${port}`));
-// Add this temporary endpoint to fix existing products
-app.get("/fix-images", async (req, res) => {
-  try {
-    const products = await Product.find({});
-    let updated = 0;
-    
-    for (let product of products) {
-      if (product.image && product.image.startsWith('http://')) {
-        product.image = product.image.replace('http://', 'https://');
-        await product.save();
-        updated++;
-      }
-    }
-    
-    res.json({ 
-      success: true, 
-      message: `Updated ${updated} products to use HTTPS` 
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-
-
-// ✅ Temporary route to fix old image URLs in the database
-app.get("/fix-images", async (req, res) => {
-  try {
-    const products = await Product.find({});
-    let updated = 0;
-
-    for (let product of products) {
-      if (
-        product.image &&
-        (product.image.includes("localhost") || product.image.startsWith("http://"))
-      ) {
-        // Replace old URL with your deployed Railway backend domain
-        product.image = product.image.replace(
-          /http:\/\/localhost:\d+\/images/g,
-          "https://e-commerce-production-687b.up.railway.app/images"
-        );
-        product.image = product.image.replace("http://", "https://");
-        await product.save();
-        updated++;
-      }
-    }
-
-    res.json({
-      success: true,
-      message: `✅ Updated ${updated} product image URLs to use HTTPS and Railway domain`,
-    });
-  } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
