@@ -16,7 +16,7 @@ const LoginSignup = () => {
   const login = async () => {
     console.log("Login function:", formData);
     let responseData;
-    await fetch("https://e-commerce-production-687b.up.railway.app/login", {
+    await fetch("https://e-commerce-qb3u.onrender.com/login", {
       method: "POST",
       headers: {
         Accept: "application/form-data",
@@ -38,7 +38,7 @@ const LoginSignup = () => {
   const signup = async () => {
     console.log("Signup function:", formData);
     let responseData;
-    await fetch("https://e-commerce-production-687b.up.railway.app/signup", {
+    await fetch("https://e-commerce-qb3u.onrender.com/signup", {
       method: "POST",
       headers: {
         Accept: "application/form-data",
