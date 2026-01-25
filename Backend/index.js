@@ -21,10 +21,14 @@ cloudinary.config({
 
 // ✅ CORS and middleware
 app.use(cors({
-  origin: "https://e-commerce2-rust.vercel.app",
-  methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
+  origin: [
+    "http://localhost:5173",
+    "https://e-commerce2-rust.vercel.app"
+  ],
+  methods: ["GET","POST","PUT","DELETE"],
+  allowedHeaders: ["Content-Type","auth-token"]
 }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
