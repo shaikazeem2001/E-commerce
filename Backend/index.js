@@ -21,7 +21,7 @@ cloudinary.config({
 
 // ✅ CORS and middleware
 app.use(cors({
-  origin: "*",
+  origin: "https://e-commerce2-rust.vercel.app",
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
