@@ -5,7 +5,7 @@ import { useState,useEffect } from "react";
 const Newcollections = () => {
   const [new_collections, setNew_collections] = useState([]);
   useEffect(() => {
-    fetch("https://e-commerce-production-687b.up.railway.app/newcollections")
+    fetch("https://e-commerce-qb3u.onrender.com/newcollections")
     .then((response) =>response.json())
     .then((data) => setNew_collections(data));
   }, []);
