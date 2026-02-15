@@ -17,25 +17,21 @@ const port = process.env.PORT || 4000;
 // ✅ Connect Database
 connectDB();
 
-// ✅ Configure Cloudinary
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-});
+
 
 // ✅ Middleware
 app.use(cookieParser());
 app.use(cors({
   origin: (origin, callback) => {
     const allowed = [
+      "*",
       "http://localhost:5173",
       "https://e-commerce2-rust.vercel.app"
     ];
     if (!origin || allowed.includes(origin) || origin.endsWith(".vercel.app")) {
       callback(null, true);
     } else {
-      callback(new Error("CORS not allowed"));
+      callback(new Error("CORS not allowed check index.js"));
     }
   },
   credentials: true,
@@ -44,7 +40,12 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+// ✅ Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 // Log requests
 app.use((req, res, next) => {
   console.log(`\n🔍 Incoming Request: ${req.method} ${req.path}`);
