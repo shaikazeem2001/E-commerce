@@ -4,23 +4,34 @@ import logo from '../assets/logo.png';
 import carticon from '../assets/cart_icon.png';
 import { Link } from 'react-router-dom';
 import { Shopcontext } from '../../context/Shopcontext';
+import { ThemeContext } from '../../context/ThemeContext';
+import { ShoppingCart, LogIn, LogOut, Sun, Moon } from '../Icons';
 import dropdown_icon from '../../assets/Assets/Frontend_Assets/dropdown_icon.png';
+import api from '../../api/axios';
 
 const Navbar = () => {
   const [menu, setMenu] = useState('shop');
   const { getTotalCartItems } = useContext(Shopcontext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const menuRef = useRef();
 
   // ✅ Track login state
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem('auth-token'));
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // ✅ Listen for changes in localStorage across tabs
   useEffect(() => {
-    const handleStorageChange = () => {
-      setIsLoggedIn(!!localStorage.getItem('auth-token'));
+    const checkAuthStatus = async () => {
+      try {
+        const response = await api.get('/check-auth');
+        if (response.data.success) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoggedIn(false);
+        }
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
     };
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    checkAuthStatus();
   }, []);
 
   const dropdown_toggle = (e) => {
@@ -28,34 +39,59 @@ const Navbar = () => {
     e.target.classList.toggle('open');
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('auth-token'); // remove token
-    setIsLoggedIn(false); // trigger re-render
+  const handleLogout = async () => {
+    try {
+      await api.post('/logout');
+      setIsLoggedIn(false);
+      window.location.replace('/');
+    } catch (err) {
+      console.error("Logout failed", err);
+    }
   };
 
   return (
     <div className='navbar'>
       <div className="nav-logo">
-        <Link to='/'><img src={logo} alt="" /></Link>
+        <Link to='/'><img src={logo} alt="Trend Logo" /></Link>
         <Link to='/' style={{ textDecoration: 'none' }}><p>Trend</p></Link>
       </div>
 
-      <img className='nav-dropdown' onClick={dropdown_toggle} src={dropdown_icon} alt="" />
+      <img className='nav-dropdown' onClick={dropdown_toggle} src={dropdown_icon} alt="Menu Toggle" />
 
-      <div ref={menuRef} className="nav-menu">
-        <li onClick={() => setMenu('shop')}><Link style={{ textDecoration: 'none' }} to='/'>Shop</Link>{menu === 'shop' ? <hr /> : <></>}</li>
-        <li onClick={() => setMenu('mens')}><Link style={{ textDecoration: 'none' }} to='/mens'>Mens</Link>{menu === 'mens' ? <hr /> : <></>}</li>
-        <li onClick={() => setMenu('womens')}><Link style={{ textDecoration: 'none' }} to='/women'>Women</Link>{menu === 'womens' ? <hr /> : <></>}</li>
-        <li onClick={() => setMenu('kids')}><Link style={{ textDecoration: 'none' }} to='/kids'>Kids</Link>{menu === 'kids' ? <hr /> : <></>}</li>
-      </div>
+      <ul ref={menuRef} className="nav-menu">
+        <li onClick={() => setMenu('shop')}>
+          <Link style={{ textDecoration: 'none' }} to='/' className="text-hover">Shop</Link>
+          {menu === 'shop' ? <hr /> : null}
+        </li>
+        <li onClick={() => setMenu('mens')}>
+          <Link style={{ textDecoration: 'none' }} to='/mens' className="text-hover">Mens</Link>
+          {menu === 'mens' ? <hr /> : null}
+        </li>
+        <li onClick={() => setMenu('womens')}>
+          <Link style={{ textDecoration: 'none' }} to='/women' className="text-hover">Women</Link>
+          {menu === 'womens' ? <hr /> : null}
+        </li>
+        <li onClick={() => setMenu('kids')}>
+          <Link style={{ textDecoration: 'none' }} to='/kids' className="text-hover">Kids</Link>
+          {menu === 'kids' ? <hr /> : null}
+        </li>
+      </ul>
 
-      <div className="nav-login-cart">
-        {isLoggedIn ? 
-          <button onClick={handleLogout}>Logout</button> : 
-          <Link to='/login'><button>Login</button></Link>
-        }
-        <Link to='/cart'><img src={carticon} alt="" /></Link>
-        <div className="nav-cart-count">{getTotalCartItems()}</div>
+      <div className="nav-actions">
+        <button className="theme-toggle" onClick={toggleTheme}>
+          {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+        </button>
+
+        <div className="nav-login-cart">
+          {isLoggedIn ?
+            <button className="logout-btn" onClick={handleLogout}><LogOut size={18} /> Logout</button> :
+            <Link to='/login'><button className="login-btn"><LogIn size={18} /> Login</button></Link>
+          }
+          <div className="cart-container">
+            <Link to='/cart'><ShoppingCart size={28} className="cart-icon" /></Link>
+            <div className="nav-cart-count">{getTotalCartItems()}</div>
+          </div>
+        </div>
       </div>
     </div>
   );

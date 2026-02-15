@@ -1,37 +1,31 @@
-
-  /* Set body base style */
-  body {
-    font-family: "Roboto", sans-serif;
-     background-color: #fff;
-    overflow-x: hidden; /* Prevent horizontal scrollbar */
-  }
-  
-  /* Make images responsive by default */
-  img {
-    max-width: 100%;
-    display: block;
-  }
-  
-  /* Optional: smooth scrolling */
-  html {
-    scroll-behavior: smooth;
-  }
-  
-  /* Prevent any horizontal overflow globally */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@import './variables.css';
 
 html,
 body {
   width: 100%;
   overflow-x: hidden;
+  background-color: var(--background-color);
+  color: var(--text-main);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
-/* Optional but useful for smoother mobile scaling */
-body {
-  max-width: 100vw;
-  background-color: #fff;
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }

@@ -1,31 +1,62 @@
 .popular {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    height: auto;
-    padding: 60px 20px;
-  }
-  
-  .popular h1 {
-    color: #000;
-    font-size: 50px;
-    font-weight: 600;
-    text-align: center;
-  }
-  
-  .popular hr {
-    width: 200px;
-    height: 2px;
-    border-radius: 10px;
-    background: #252525;
-  }
-  
-  .popular-item {
-    margin-top: 50px;
-    display: flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 80px 5%;
+  background-color: var(--background-color);
+}
+
+.popular h1 {
+  color: var(--text-main);
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 800;
+  text-align: center;
+  position: relative;
+  letter-spacing: -1px;
+}
+
+.popular hr {
+  width: 80px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--primary-color);
+  border: none;
+  margin-top: -10px;
+}
+
+.popularitem {
+  margin-top: 40px;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 30px;
+  width: 100%;
+  max-width: 1280px;
+  overflow-x: auto; /* Allow horizontal scroll if squeezed */
+  padding-bottom: 20px;
+}
+
+.popularitem::-webkit-scrollbar {
+  height: 6px;
+}
+
+.popularitem::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+@media (max-width: 1024px) {
+  .popularitem {
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
+    overflow-x: visible;
   }
-  
+}
+
+@media (max-width: 500px) {
+  .popularitem {
+    grid-template-columns: 1fr;
+  }
+}

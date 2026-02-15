@@ -96,3 +96,11 @@
         padding: 20px 30px;
     }
 }
+
+.loginsignup-error {
+    color: #ff4d4d;
+    font-size: 14px;
+    margin-top: 10px;
+    text-align: center;
+    font-weight: 500;
+}

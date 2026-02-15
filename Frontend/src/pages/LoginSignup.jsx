@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import "./css/LoginSignup.css";
+import api from "../api/axios";
 
 const LoginSignup = () => {
   const [state, setState] = useState("Signup");
+  const [error, setError] = useState("");
   const [formData, setformData] = useState({
     username: "",
     password: "",
@@ -11,51 +13,40 @@ const LoginSignup = () => {
 
   const changehandler = (e) => {
     setformData({ ...formData, [e.target.name]: e.target.value });
+    if (error) setError(""); // Clear error on change
   };
 
   const login = async () => {
+    setError("");
     console.log("Login function:", formData);
-    let responseData;
-    await fetch("https://e-commerce-qb3u.onrender.com/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/form-data",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    }).then((response) => response.json())
-      .then((data) => (responseData = data));
+    try {
+      const response = await api.post('/login', formData);
 
-      if(responseData.success){
-        localStorage.setItem('auth-token',responseData.token)
+      if (response.data.success) {
         window.location.replace('/');
+      } else {
+        setError(response.data.error);
       }
-      else{
-       alert(responseData.errors)
-      }
+    } catch (err) {
+      setError(err.response?.data?.error || "An error occurred. Please try again.");
+    }
   };
 
   const signup = async () => {
+    setError("");
     console.log("Signup function:", formData);
-    let responseData;
-    await fetch("https://e-commerce-qb3u.onrender.com/signup", {
-      method: "POST",
-      headers: {
-        Accept: "application/form-data",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    }).then((response) => response.json())
-      .then((data) => (responseData = data));
+    try {
+      const response = await api.post('/signup', formData);
 
-      if(responseData.success){
-        localStorage.setItem('auth-token',responseData.token)
+      if (response.data.success) {
         window.location.replace('/');
+      } else {
+        setError(response.data.error);
       }
-      else{
-       alert(responseData.errors)
-      }
-  }; 
+    } catch (err) {
+      setError(err.response?.data?.error || "An error occurred. Please try again.");
+    }
+  };
 
   return (
     <form className="loginsignup" onSubmit={(e) => e.preventDefault()}>
@@ -89,6 +80,8 @@ const LoginSignup = () => {
             placeholder="Password"
           />
         </div>
+
+        {error && <p className="loginsignup-error">{error}</p>}
 
         <button
           onClick={(e) => {

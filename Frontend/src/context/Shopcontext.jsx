@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
+import api from "../api/axios";
 
 export const Shopcontext = createContext(null);
 
@@ -11,54 +12,47 @@ const getDefaultCart = () => {
 const Shopcontextprovider = (props) => {
   const [all_product, setall_product] = useState([]);
   const [cartItems, setCartItems] = useState(getDefaultCart());
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  // ✅ Track token so we can refetch cart on login/logout
-  const [authToken, setAuthToken] = useState(localStorage.getItem("auth-token") || null);
+  // ✅ Check auth status on mount
+  const checkAuth = async () => {
+    try {
+      const response = await api.get('/check-auth');
+      if (response.data.success) {
+        setIsLoggedIn(true);
+        fetchCart();
+      } else {
+        setIsLoggedIn(false);
+        setCartItems(getDefaultCart());
+      }
+    } catch (err) {
+      console.error("Auth check failed", err);
+      setIsLoggedIn(false);
+    }
+  };
 
   // Fetch all products
   useEffect(() => {
-    fetch("https://e-commerce-qb3u.onrender.com/allproducts")
-      .then((res) => res.json())
-      .then((data) => setall_product(data))
+    api.get('/allproducts')
+      .then((res) => setall_product(res.data))
       .catch((err) => console.error("❌ Fetch products error:", err));
+
+    checkAuth();
   }, []);
 
-  // Fetch cart whenever token changes
-  useEffect(() => {
-    if (!authToken) {
-      setCartItems(getDefaultCart()); // reset cart if logged out
-      return;
-    }
-
-    fetch("https://e-commerce-qb3u.onrender.com/getcart", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "auth-token": authToken,
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setCartItems(data))
+  const fetchCart = () => {
+    api.post('/getcart', {})
+      .then((res) => setCartItems(res.data))
       .catch((err) => console.error("❌ Fetch cart error:", err));
-  }, [authToken]);
+  };
 
   // Add to cart
   const addToCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
 
-    if (authToken) {
-      fetch("https://e-commerce-qb3u.onrender.com/addtocart", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "auth-token": authToken,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ itemId }),
-      })
-        .then((res) => res.json())
-        .then((data) => console.log("✅ Backend response:", data))
+    if (isLoggedIn) {
+      api.post('/addtocart', { itemId })
+        .then((res) => console.log("✅ Backend response:", res.data))
         .catch((err) => console.error("❌ Add to cart error:", err));
     }
   };
@@ -66,16 +60,9 @@ const Shopcontextprovider = (props) => {
   // Remove from cart
   const removeFromCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
-    if (authToken) {
-      fetch("https://e-commerce-qb3u.onrender.com/removefromcart", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "auth-token": authToken,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ itemId }),
-      }).catch((err) => console.error("❌ Remove from cart error:", err));
+    if (isLoggedIn) {
+      api.post('/removefromcart', { itemId })
+        .catch((err) => console.error("❌ Remove from cart error:", err));
     }
   };
 
@@ -93,17 +80,6 @@ const Shopcontextprovider = (props) => {
   const getTotalCartItems = () =>
     Object.values(cartItems).reduce((a, b) => a + b, 0);
 
-  // ✅ Login and logout helpers for Navbar
-  const login = (token) => {
-    localStorage.setItem("auth-token", token);
-    setAuthToken(token);
-  };
-
-  const logout = () => {
-    localStorage.removeItem("auth-token");
-    setAuthToken(null);
-  };
-
   return (
     <Shopcontext.Provider
       value={{
@@ -113,9 +89,9 @@ const Shopcontextprovider = (props) => {
         cartItems,
         addToCart,
         removeFromCart,
-        authToken,
-        login,
-        logout,
+        isLoggedIn,
+        setIsLoggedIn,
+        checkAuth
       }}
     >
       {props.children}

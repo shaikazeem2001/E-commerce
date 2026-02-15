@@ -1,10 +1,12 @@
 import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "./CartItems.css";
 import { Shopcontext } from "../../context/Shopcontext";
 import remove_icon from "../../assets/Assets/Frontend_Assets/remove_icon.png";
 
 const CartItems = () => {
-  const {getTotalCartAmount, all_product, cartItems, removeFromCart } = useContext(Shopcontext); // Make sure names match
+  const { getTotalCartAmount, all_product, cartItems, removeFromCart } = useContext(Shopcontext);
+  const navigate = useNavigate();
 
   return (
     <div className="cartitems">
@@ -39,35 +41,35 @@ const CartItems = () => {
             </div>
           );
         }
-        return null; 
+        return null;
       })}
       <div className="cartitems-down">
         <div className="catritems-total">
-            <h1>Cart Total</h1>
-            <div>
-                <div className="catitems-total-item">
-                    <p>Subtotal</p>
-                    <p>${getTotalCartAmount()}</p>
-                </div>
-                <hr />
-                <div className="cartitems-total-items">
-                    <p>Shipping Fee</p>
-                    <p>Free</p>
-                  </div>
-                  <hr />
-                  <div className="cartitems-total-items">
-                    <p>Total</p>
-                    <p>${getTotalCartAmount()}</p>
-                  </div>
+          <h1>Cart Total</h1>
+          <div>
+            <div className="catitems-total-item">
+              <p>Subtotal</p>
+              <p>${getTotalCartAmount()}</p>
             </div>
-            <button>Proceed To Checkout</button>
+            <hr />
+            <div className="cartitems-total-items">
+              <p>Shipping Fee</p>
+              <p>Free</p>
+            </div>
+            <hr />
+            <div className="cartitems-total-items">
+              <p>Total</p>
+              <p>${getTotalCartAmount()}</p>
+            </div>
+          </div>
+          <button onClick={() => navigate('/checkout')}>Proceed To Checkout</button>
         </div>
         <div className="cartitems-promocode">
-            <p>If you have promo code,Enter it here</p>
-            <div className="cartitems-promobox">
-                <input type="text" placeholder="Enter PromoCode" name="" id="" />
-                <button>Submit</button>
-            </div>
+          <p>If you have promo code,Enter it here</p>
+          <div className="cartitems-promobox">
+            <input type="text" placeholder="Enter PromoCode" name="" id="" />
+            <button>Submit</button>
+          </div>
         </div>
       </div>
     </div>
