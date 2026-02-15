@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Shopcontext } from "../context/Shopcontext";
 import { CreditCard, Truck, ShieldCheck, ArrowLeft, Loader2 } from "../components/Icons";
-import "./CSS/Checkout.css";
+import "./css/Checkout.css";
 
 const Checkout = () => {
     const { getTotalCartAmount } = useContext(Shopcontext);
