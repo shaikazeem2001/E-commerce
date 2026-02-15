@@ -27,13 +27,20 @@ cloudinary.config({
 // ✅ Middleware
 app.use(cookieParser());
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://e-commerce2-rust.vercel.app"
-  ],
+  origin: (origin, callback) => {
+    const allowed = [
+      "http://localhost:5173",
+      "https://e-commerce2-rust.vercel.app"
+    ];
+    if (!origin || allowed.includes(origin) || origin.endsWith(".vercel.app")) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed"));
+    }
+  },
   credentials: true,
-  methods: ["GET","POST","PUT","DELETE"],
-  allowedHeaders: ["Content-Type","auth-token"]
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "auth-token"]
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
