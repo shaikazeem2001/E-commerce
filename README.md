@@ -46,3 +46,161 @@ This project reflects **real-world engineering practices**, focusing on performa
 
 ## High-Level Architecture
 
+           ┌──────────────────┐
+           │     Client       │
+           │   (React App)    │
+           └─────────┬────────┘
+                     │ HTTPS (REST API)
+                     ▼
+           ┌──────────────────┐
+           │   Node.js API    │
+           │  Express Server  │
+           └─────────┬────────┘
+                     │
+                     ▼
+           ┌──────────────────┐
+           │    MongoDB       │
+           │   Database       │
+           └──────────────────┘
+
+
+
+(Enterprise upgrade path: HTTP-only cookies + Refresh token rotation)
+
+---
+
+# ✨ Core Features
+
+## 🔐 Authentication & Security
+- JWT-based authentication
+- Password hashing with bcrypt
+- Protected API routes
+- Middleware-based token validation
+- Secure backend validation
+- Clean error handling system
+
+## 🛒 E-Commerce Functionality
+- Product listing
+- Dynamic cart management
+- Checkout system
+- Real-time cart updates
+- Persistent user sessions
+
+## 🎨 UI / UX
+- Responsive design
+- Optimized loading performance
+- Component-based architecture
+- Animation-ready structure (GSAP compatible)
+- Theme toggle ready architecture
+
+## ⚙️ Backend Engineering
+- RESTful API design
+- MVC-inspired structure
+- Modular routes & controllers
+- Centralized error handling
+- Environment-based configuration
+
+---
+
+# 🧰 Tech Stack
+
+## Frontend
+- React.js
+- Axios
+- React Router
+- CSS / Tailwind (if used)
+- GSAP (for animations)
+
+## Backend
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT
+- bcrypt
+
+## Deployment
+- Frontend: Vercel
+- Backend: Node server deployment
+
+---
+
+# 📂 Project Structure
+E-commerce/
+│
+├── client/
+│ ├── components/
+│ ├── pages/
+│ ├── context/
+│ ├── hooks/
+│ └── styles/
+│
+├── server/
+│ ├── controllers/
+│ ├── routes/
+│ ├── middleware/
+│ ├── models/
+│ ├── config/
+│ └── utils/
+│
+└── README.md
+
+---
+
+# ⚙️ Installation Guide
+2️⃣ Backend Setup
+cd server
+npm install
+npm run dev
+
+
+Create .env file:
+
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+
+## 1️⃣ Clone Repository
+
+```bash
+git clone https://github.com/shaikazeem2001/E-commerce.git
+cd E-commerce
+openapi: 3.0.0
+info:
+  title: E-Commerce API
+  version: 1.0.0
+  description: REST API for E-Commerce Platform
+
+servers:
+  - url: http://localhost:5000/api
+
+paths:
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+      responses:
+        '201':
+          description: User created successfully
+
+  /auth/login:
+    post:
+      summary: Login user
+      responses:
+        '200':
+          description: JWT token returned
+
+  /products:
+    get:
+      summary: Get all products
+      responses:
+        '200':
+          description: List of products
+
+  /cart:
+    post:
+      summary: Add product to cart
+      responses:
+        '200':
+          description: Item added to cart
