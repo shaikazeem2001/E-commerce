@@ -50,14 +50,14 @@ let all_product = [
     category: "women",
     image: p2_img,
     new_price: 85.0,
-    old_price: 120.5,
+    old_price: 130.5,
   },
   {
     id: 3,
     name: "Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse",
     category: "women",
     image: p3_img,
-    new_price: 60.0,
+    new_price: 150.0,
     old_price: 100.5,
   },
   {
@@ -65,7 +65,7 @@ let all_product = [
     name: "Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse",
     category: "women",
     image: p4_img,
-    new_price: 100.0,
+    new_price: 160.0,
     old_price: 150.0,
   },
   {
@@ -73,7 +73,7 @@ let all_product = [
     name: "Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse",
     category: "women",
     image: p5_img,
-    new_price: 85.0,
+    new_price: 170.0,
     old_price: 120.5,
   },
   {
@@ -81,7 +81,7 @@ let all_product = [
     name: "Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse",
     category: "women",
     image: p6_img,
-    new_price: 85.0,
+    new_price: 185.0,
     old_price: 120.5,
   },
   {
@@ -89,7 +89,7 @@ let all_product = [
     name: "Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse",
     category: "women",
     image: p7_img,
-    new_price: 85.0,
+    new_price: 195.0,
     old_price: 120.5,
   },
   {
@@ -97,7 +97,7 @@ let all_product = [
     name: "Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse",
     category: "women",
     image: p8_img,
-    new_price: 85.0,
+    new_price: 205.0,
     old_price: 120.5,
   },
   {
@@ -105,7 +105,7 @@ let all_product = [
     name: "Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse",
     category: "women",
     image: p9_img,
-    new_price: 85.0,
+    new_price: 305.0,
     old_price: 120.5,
   },
   {
@@ -113,7 +113,7 @@ let all_product = [
     name: "Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse",
     category: "women",
     image: p10_img,
-    new_price: 85.0,
+    new_price: 405.0,
     old_price: 120.5,
   },
   {
@@ -121,7 +121,7 @@ let all_product = [
     name: "Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse",
     category: "women",
     image: p11_img,
-    new_price: 85.0,
+    new_price: 595.0,
     old_price: 120.5,
   },
   {
@@ -129,7 +129,7 @@ let all_product = [
     name: "Striped Flutter Sleeve Overlap Collar Peplum Hem Blouse",
     category: "women",
     image: p12_img,
-    new_price: 85.0,
+    new_price: 645.0,
     old_price: 120.5,
   },
   {
@@ -137,7 +137,7 @@ let all_product = [
     name: "Men Green Solid Zippered Full-Zip Slim Fit Bomber Jacket",
     category: "men",
     image: p13_img,
-    new_price: 85.0,
+    new_price: 785.0,
     old_price: 120.5,
   },
   {
@@ -145,7 +145,7 @@ let all_product = [
     name: "Men Green Solid Zippered Full-Zip Slim Fit Bomber Jacket",
     category: "men",
     image: p14_img,
-    new_price: 85.0,
+    new_price: 805.0,
     old_price: 120.5,
   },
   {
@@ -153,7 +153,7 @@ let all_product = [
     name: "Men Green Solid Zippered Full-Zip Slim Fit Bomber Jacket",
     category: "men",
     image: p15_img,
-    new_price: 85.0,
+    new_price: 915.0,
     old_price: 120.5,
   },
   {
@@ -161,7 +161,7 @@ let all_product = [
     name: "Men Green Solid Zippered Full-Zip Slim Fit Bomber Jacket",
     category: "men",
     image: p16_img,
-    new_price: 85.0,
+    new_price: 925.0,
     old_price: 120.5,
   },
   {
@@ -169,7 +169,7 @@ let all_product = [
     name: "Men Green Solid Zippered Full-Zip Slim Fit Bomber Jacket",
     category: "men",
     image: p17_img,
-    new_price: 85.0,
+    new_price: 935.0,
     old_price: 120.5,
   },
   {
@@ -321,7 +321,7 @@ let all_product = [
     name: "Boys Orange Colourblocked Hooded Sweatshirt",
     category: "kid",
     image: p36_img,
-    new_price: 85.0,
+    new_price: 185.0,
     old_price: 120.5,
   },
 ];

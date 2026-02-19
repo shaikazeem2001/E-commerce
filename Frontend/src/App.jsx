@@ -1,22 +1,20 @@
 import './App.css'
-import Navbar from './components/Navbar/Navbar'
+import Navbar from './components/navbar/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import ShopCategory from './pages/ShopCategory'
 import Cart from './pages/Cart'
 import LoginSignup from './pages/LoginSignup'
 import Product from './pages/Product'
 import Shop from './pages/Shop'
-import Footer from './components/Footer/Footer'
+import Footer from './components/footer/Footer'
 import Checkout from './pages/Checkout'
 import men_banner from './components/assets/banner_mens.png'
 import women_banner from './components/assets/banner_women.png'
 import kids_banner from './components/assets/banner_kids.png'
-import CustomCursor from './components/CustomCursor/CustomCursor'
 
 function App() {
   return (
     <>
-      <CustomCursor />
       <Navbar />
       <Routes>
         <Route path='/' element={<Shop />} />

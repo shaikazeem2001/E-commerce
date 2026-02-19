@@ -4,7 +4,7 @@ import footer_logo from '../assets/logo_big.png';
 import instagram_icon from '../assets/instagram_icon.png';
 import pinterest_icon from '../assets/pintester_icon.png';
 import whatsapp_icon from '../assets/whatsapp_icon.png';
-
+import { Link } from 'react-router-dom';
 const Footer = () => {
   return (
     <div className="footer">
@@ -14,11 +14,12 @@ const Footer = () => {
       </div>
 
       <ul className="footer-links">
-        <li>Company</li>
-        <li>Products</li>
-        <li>Offices</li>
-        <li>About</li>
-        <li>Contact</li>
+        <li><Link to="/">Company</Link></li>
+        <li><Link to="/">Products</Link></li>
+        <li><Link to="/">Offices</Link></li>
+        <li><Link to="/">About</Link></li>
+        <li><Link to="/">Contact</Link></li>
+        <li className="admin-link"><a href="http://localhost:5173" target="_blank" rel="noreferrer">Admin</a></li>
       </ul>
 
       <div className="footer-social-icons">

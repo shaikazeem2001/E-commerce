@@ -41,6 +41,13 @@ const ProductDisplay = (props) => {
           garment.
         </div>
         <div className="productdisplay-right-size">
+          <h1>Select Color</h1>
+          <div className="productdisplay-right-colors">
+            <div style={{ backgroundColor: '#ff0000' }}></div>
+            <div style={{ backgroundColor: '#0000ff' }}></div>
+            <div style={{ backgroundColor: '#000000' }}></div>
+            <div style={{ backgroundColor: '#ffffff', border: '1px solid #ccc' }}></div>
+          </div>
           <h1>Select Size</h1>
           <div className="productdisplay-right-sizes">
             <div>S</div>

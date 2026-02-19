@@ -1,0 +1,13 @@
+{
+    "name": "e-commerce-monorepo",
+    "private": true,
+    "workspaces": [
+        "frontend",
+        "backend",
+        "admin"
+    ],
+    "scripts": {
+        "dev": "npm run dev --workspace=frontend & npm run start --workspace=backend",
+        "install-all": "npm install"
+    }
+}

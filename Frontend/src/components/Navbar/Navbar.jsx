@@ -5,12 +5,12 @@ import carticon from '../assets/cart_icon.png';
 import { Link } from 'react-router-dom';
 import { Shopcontext } from '../../context/Shopcontext';
 import { ThemeContext } from '../../context/ThemeContext';
-import { ShoppingCart, LogIn, LogOut, Sun, Moon } from '../Icons';
-import dropdown_icon from '../../assets/Assets/Frontend_Assets/dropdown_icon.png';
+import { ShoppingCart, LogIn, LogOut, Sun, Moon, Menu, X } from '../Icons';
 import api from '../../api/axios';
 
 const Navbar = () => {
   const [menu, setMenu] = useState('shop');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { getTotalCartItems } = useContext(Shopcontext);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const menuRef = useRef();
@@ -34,9 +34,9 @@ const Navbar = () => {
     checkAuthStatus();
   }, []);
 
-  const dropdown_toggle = (e) => {
+  const dropdown_toggle = () => {
+    setIsMenuOpen(!isMenuOpen);
     menuRef.current.classList.toggle('nav-menu-visible');
-    e.target.classList.toggle('open');
   };
 
   const handleLogout = async () => {
@@ -56,7 +56,9 @@ const Navbar = () => {
         <Link to='/' style={{ textDecoration: 'none' }}><p>Trend</p></Link>
       </div>
 
-      <img className='nav-dropdown' onClick={dropdown_toggle} src={dropdown_icon} alt="Menu Toggle" />
+      <div className='nav-dropdown' onClick={dropdown_toggle}>
+        {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
+      </div>
 
       <ul ref={menuRef} className="nav-menu">
         <li onClick={() => setMenu('shop')}>
