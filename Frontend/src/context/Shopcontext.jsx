@@ -21,13 +21,14 @@ const Shopcontextprovider = (props) => {
       if (response.data.success) {
         setIsLoggedIn(true);
         fetchCart();
-      } else {
-        setIsLoggedIn(false);
-        setCartItems(getDefaultCart());
       }
     } catch (err) {
-      console.error("Auth check failed", err);
+      // 401 is expected if not logged in; don't clutter the console with an error
+      if (err.response?.status !== 401) {
+        console.error("Auth check failed:", err);
+      }
       setIsLoggedIn(false);
+      setCartItems(getDefaultCart());
     }
   };
 

@@ -1,51 +1,4 @@
-<<<<<<< HEAD
-# 👕 Trend E-commerce Platform
-
-A modern, high-performance e-commerce solution built with **React**, **Node.js**, **Express**, and **MongoDB**.
-
-## 🏗️ Project Architecture
-
-```mermaid
-graph TD
-    A[Frontend - React/Vite] --> B[API Layer - Axios]
-    B --> C[Backend - Node/Express]
-    C --> D[Database - MongoDB]
-    C --> E[Storage - Cloudinary]
-    F[Admin Panel - React] --> C
-```
-
-> [!NOTE] 
-> For mobile users, the above diagram is best viewed in landscape mode or by zooming.
-
-## 🚀 Key Features
-- **Secure Auth**: JWT stored in HTTP-only cookies.
-- **Advanced Filtering**: Filter by price and sorting.
-- **Dynamic UX**: Loading states, responsive design, and theme support.
-- **Professional Hygiene**: Standardized directory casing and git-ignore patterns.
-
-## 🛠️ Tech Stack
-- **Frontend**: React 19, GSAP, Axios, Lucide Icons.
-- **Backend**: Express, MongoDB, Cloudinary, Cookie-parser.
-- **Security**: JWT, secure cookies, CORS origin validation.
-
-## 📖 Deployment Instructions
-Please refer to [DEPLOYMENT.md](./DEPLOYMENT.md) for step-by-step instructions for Vercel, Render, and other platforms.
-
-## ♿ Accessibility (WCAG 2.1 Level AA)
-We've conducted a preliminary accessibility audit and implemented:
-- **Semantic HTML**: Proper use of `<main>`, `<aside>`, `<nav>`, and `<header>`.
-- **Keyboard Navigation**: Removed "annoying" outlines while maintaining focus visibility.
-- **Contrast**: High contrast theme support.
-
-## 👔 Recruiter Access (Admin)
-The admin panel is accessible in local development at `http://localhost:5173/admin` (if running locally) or via the **Admin** link in the project footer.
-
----
-Built with ❤️ by Antigravity.
-=======
-
-
-# 🛒 Enterprise E-Commerce Platform
+# 🛒 Trend Enterprise E-Commerce Platform
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
@@ -59,8 +12,8 @@ Built with ❤️ by Antigravity.
 
 ## 🌐 Live Application
 
-🔗 **Live Demo:** https://e-commerce2-rust.vercel.app/  
-📦 **Repository:** https://github.com/shaikazeem2001/E-commerce  
+🔗 **Live Demo:** [https://e-commerce2-rust.vercel.app/](https://e-commerce2-rust.vercel.app/)  
+📦 **Repository:** [https://github.com/shaikazeem2001/E-commerce](https://github.com/shaikazeem2001/E-commerce)  
 
 ---
 
@@ -69,50 +22,34 @@ Built with ❤️ by Antigravity.
 This is a production-ready, full-stack **Enterprise E-Commerce Platform** built using a modern, scalable architecture.
 
 The platform provides:
-
-- Secure JWT authentication
+- Secure JWT authentication & HTTP-only cookies
 - Role-based access control (Admin & Users)
-- Dynamic product management
-- Optimized frontend performance
-- Scalable backend REST API
+- Dynamic product management & Inventory control
+- Optimized frontend performance with GSAP animations
+- Scalable backend REST API with MongoDB
 - Clean modular architecture
 
 Designed with **security, performance, scalability, and maintainability** in mind.
-
-
 
 # 🏗️ System Architecture
 
 ## 📊 High-Level Architecture
 
-         ┌───────────────────────┐
-             │       Frontend        │
-             │      (React App)      │
-             └───────────┬───────────┘
-                         │
-                         │ REST API (HTTPS)
-                         │
-             ┌───────────▼───────────┐
-             │        Backend        │
-             │    Node.js + Express  │
-             └───────────┬───────────┘
-                         │
-                         │ Mongoose ODM
-                         │
-             ┌───────────▼───────────┐
-             │        MongoDB        │
-             │     Database Layer    │
-             └───────────────────────┘
-
-
-
+```mermaid
+graph TD
+    A[Frontend - React App] --> B[API Layer - Axios]
+    B --> C[Backend - Node/Express]
+    C --> D[Database - MongoDB]
+    C --> E[Storage - Cloudinary]
+    F[Admin Dashboard] --> C
+```
 
 ## 🧩 Folder Architecture
 
-
+```text
 E-commerce/
 │
-├── Backend/        # Node.js + Express API
+├── backend/        # Node.js + Express API
 │   ├── controllers/
 │   ├── middleware/
 │   ├── models/
@@ -131,8 +68,7 @@ E-commerce/
 │   └── services/
 │
 └── README.md
-
-
+```
 
 # 🔐 Authentication & Authorization
 
@@ -143,234 +79,94 @@ E-commerce/
 - Token validation on every secured request
 
 ### 🛡 Authorization (Role-Based Access)
-- User Role
-- Admin Role
+- **User Role**: Access to shopping, cart, and profile.
+- **Admin Role**: Exclusive access to the Admin Panel.
 
 Admin panel can:
-- Add products
-- Update products
-- Delete products
-- Manage inventory
-
-Only accessible by users with `admin` role.
+- Add, update, and delete products
+- Manage inventory in real-time
 
 ---
 
 # 🚀 Core Features
 
 ## 🛍 User Features
-- Product listing
-- Add to cart
-- Dynamic cart updates
-- Secure login/register
-- Protected checkout
-- Responsive UI
+- Advanced product filtering (Price Range 0-100k)
+- Intelligent Sorting (Newest, Best Sellers, Price)
+- Add to cart & dynamic updates
+- Secure login/register with HTTP-only cookies
+- Protected checkout flow
+- Modern, responsive UI with Dark Mode support
 
 ## 🛠 Admin Features
 - Product CRUD operations
-- Inventory management
 - Secure role-based dashboard
-- Backend validation
+- Cloudinary integration for image uploads
+- Backend validation & error handling
 
 ---
 
 # ⚙️ Technology Stack
 
 ### Frontend
-- React.js
-- Axios
-- React Router
-- CSS / Tailwind
-- GSAP (UI animations)
+- **React 19**
+- **Axios** (Centralized API instance)
+- **GSAP** (Smooth UI animations)
+- **Lucide Icons**
+- **Vite** (Build tool)
 
 ### Backend
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JWT
-- bcrypt
-
-### Deployment
-- Frontend: Vercel
-- Backend: (Railway / Render / Custom Node Server)
-
----
-
-# 📄 API Documentation (Swagger Format)
-
-Below is a simplified OpenAPI (Swagger) specification example:
-
-openapi: 3.0.0
-info:
-  title: E-Commerce API
-  version: 1.0.0
-
-paths:
-  /api/auth/register:
-    post:
-      summary: Register a new user
-      requestBody:
-        required: true
-      responses:
-        201:
-          description: User registered successfully
-
-  /api/auth/login:
-    post:
-      summary: Login user
-      responses:
-        200:
-          description: Returns JWT token
-
-  /api/products:
-    get:
-      summary: Get all products
-      responses:
-        200:
-          description: List of products
-
-  /api/products:
-    post:
-      summary: Add new product (Admin only)
-      responses:
-        201:
-          description: Product created
-
-  /api/cart:
-    post:
-      summary: Add item to cart
-      responses:
-        200:
-          description: Cart updated
-`
-You can integrate Swagger UI using:
-
-```bash
-npm install swagger-ui-express
-```
+- **Node.js & Express**
+- **MongoDB & Mongoose**
+- **JWT & Cookie-parser**
+- **Cloudinary** (Asset management)
 
 ---
 
 # 🔧 Installation Guide
 
 ## 1️⃣ Clone Repository
-
 ```bash
 git clone https://github.com/shaikazeem2001/E-commerce.git
 cd E-commerce
 ```
 
----
-
 ## 2️⃣ Backend Setup
-
 ```bash
-cd Backend
+cd backend
+npm install
+npm run dev
+```
+Create `.env` file (see `.env.example`):
+```text
+PORT=4000
+MONGODB_URI=your_mongo_connection
+JWT_SECRET=your_secret_key
+CLOUDINARY_CLOUD_NAME=...
+CLOUDINARY_API_KEY=...
+CLOUDINARY_API_SECRET=...
+```
+
+## 3️⃣ Frontend Setup
+```bash
+cd frontend
 npm install
 npm run dev
 ```
 
-Create `.env` file:
-
-```
-PORT=5000
-MONGO_URI=your_mongo_connection
-JWT_SECRET=your_secret_key
-```
-
----
-
-## 3️⃣ Frontend Setup
-
-```bash
-cd frontend
-npm install
-npm start
-```
-
----
-
-## 4️⃣ Admin Panel Setup
-
-```bash
-cd admin
-npm install
-npm start
-```
-
----
-
-# 📈 Performance & Scalability Considerations
-
-* Modular backend architecture
-* Middleware-based request validation
-* Efficient MongoDB indexing
-* Stateless authentication
-* Environment-based configuration
-* Production-ready deployment pipeline
-
----
-
-# 🧠 Security Enhancements (Production-Level)
-
-* JWT with expiration
-* HTTP-only cookies (recommended)
-* Role-based authorization middleware
-* Rate limiting (recommended)
-* CORS configuration
-* Input validation & sanitization
-
 ---
 
 # 🎯 Recruiter-Focused Highlights
-
-✔ Built full-stack enterprise-level architecture
-✔ Implemented JWT authentication & role-based access
-✔ Designed scalable REST API
-✔ Created separate Admin Dashboard
-✔ Followed clean modular folder structure
-✔ Deployed live production application
-✔ Focused on performance optimization & UI experience
-
-This project demonstrates:
-
-* Full-stack development capability
-* Secure authentication implementation
-* Backend architecture design
-* Database modeling
-* Production deployment experience
-* Clean code practices
-
----
-
-# 📊 Future Enhancements
-
-* Stripe Payment Integration
-* Order Management System
-* Refresh Token Rotation
-* CI/CD Pipeline
-* Dockerization
-* Unit & Integration Testing
-* Redis Caching
-* Microservices Architecture
+✔ **Clean Code**: Standardized directory casing and modular structure.
+✔ **Security**: Implemented JWT with HTTP-only cookies for session safety.
+✔ **Scale**: Project organized with npm workspaces for easy monorepo management.
+✔ **Performance**: Zero custom cursor lag, optimized GSAP ripples, and shimmer loading states.
 
 ---
 
 # 👨‍💻 Author
+**Azeem Shaik**  
+MS in Computer Science | Full-Stack Developer  
+GitHub: [shaikazeem2001](https://github.com/shaikazeem2001)
 
-**Azeem Shaik**
-MS in Computer Science
-Full-Stack Developer
-
-GitHub: [https://github.com/shaikazeem2001](https://github.com/shaikazeem2001)
-
-
-
-# ⭐ Support
-
-If you found this project valuable, consider giving it a ⭐ on GitHub.
-
-
-
->>>>>>> refs/remotes/origin/main
+Built with ❤️ by Antigravity.

@@ -8,6 +8,9 @@ import Product from './pages/Product'
 import Shop from './pages/Shop'
 import Footer from './components/footer/Footer'
 import Checkout from './pages/Checkout'
+import Offices from './pages/Offices'
+import About from './pages/About'
+import Contact from './pages/Contact'
 import men_banner from './components/assets/banner_mens.png'
 import women_banner from './components/assets/banner_women.png'
 import kids_banner from './components/assets/banner_kids.png'
@@ -25,6 +28,9 @@ function App() {
         <Route path='cart' element={<Cart />} />
         <Route path='login' element={<LoginSignup />} />
         <Route path='checkout' element={<Checkout />} />
+        <Route path='/offices' element={<Offices />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/contact' element={<Contact />} />
       </Routes>
       <Footer />
     </>
