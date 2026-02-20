@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import "../pages/css/shopcatogory.css";
+import "./css/shopcategory.css";
 import { Shopcontext } from "../context/Shopcontext";
 import sort_icon from "../assets/Assets/Frontend_Assets/sort_icon.png";
 import Item from "../components/item/Item";

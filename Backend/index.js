@@ -10,14 +10,13 @@ const connectDB = require('./config/db');
 // Routes
 const userRoutes = require('./route/user.routes');
 const productRoutes = require('./route/product.routes');
+const contactRoutes = require('./route/contact.routes');
 
 const app = express();
 const port = process.env.PORT || 4000;
 
 // ✅ Connect Database
 connectDB();
-
-
 
 // ✅ Middleware
 app.use(cookieParser());
@@ -40,12 +39,14 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 // ✅ Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
+
 // Log requests
 app.use((req, res, next) => {
   console.log(`\n🔍 Incoming Request: ${req.method} ${req.path}`);
@@ -85,6 +86,7 @@ app.post("/upload", upload.single("image"), async (req, res) => {
 // ✅ Modular Routes
 app.use('/', userRoutes);
 app.use('/', productRoutes);
+app.use('/contact', contactRoutes);
 
 // ✅ Start server
 app.listen(port, () => console.log(`🚀 Server running on port ${port}`));

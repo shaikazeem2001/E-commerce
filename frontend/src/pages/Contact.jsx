@@ -1,18 +1,33 @@
 import React, { useState } from 'react';
 import './css/Contact.css';
-import { Send } from '../components/Icons';
+import { Send, Loader2 } from '../components/Icons';
+import api from '../api/axios';
 
 const Contact = () => {
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         message: ''
     });
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert('Message sent! Azeem will get back to you soon. 🚀');
-        setFormData({ name: '', email: '', message: '' });
+        setLoading(true);
+        try {
+            const response = await api.post('/contact', formData);
+            if (response.data.success) {
+                alert('Message sent! Azeem will get back to you soon. 🚀');
+                setFormData({ name: '', email: '', message: '' });
+            } else {
+                alert('Failed to send message. Please try again later.');
+            }
+        } catch (err) {
+            console.error("Submission error:", err);
+            alert('Something went wrong. Please check your connection.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -53,8 +68,8 @@ const Contact = () => {
                         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     ></textarea>
                 </div>
-                <button type="submit" className="send-btn">
-                    Send <Send size={20} />
+                <button type="submit" className="send-btn" disabled={loading}>
+                    {loading ? <><Loader2 size={20} className="spinner" /> Sending...</> : <>Send <Send size={20} /></>}
                 </button>
             </form>
         </div>
