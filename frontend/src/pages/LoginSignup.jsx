@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./css/LoginSignup.css";
 import api from "../api/axios";
+import toast from 'react-hot-toast';
 
 const LoginSignup = () => {
   const [state, setState] = useState("Signup");
@@ -23,12 +24,16 @@ const LoginSignup = () => {
       const response = await api.post('/login', formData);
 
       if (response.data.success) {
-        window.location.replace('/');
+        toast.success("Login Successful! Welcome back. 🚀");
+        setTimeout(() => window.location.replace('/'), 1000);
       } else {
         setError(response.data.error);
+        toast.error(response.data.error || "Login failed");
       }
     } catch (err) {
-      setError(err.response?.data?.error || "An error occurred. Please try again.");
+      const msg = err.response?.data?.error || "An error occurred. Please try again.";
+      setError(msg);
+      toast.error(msg);
     }
   };
 
@@ -39,12 +44,16 @@ const LoginSignup = () => {
       const response = await api.post('/signup', formData);
 
       if (response.data.success) {
-        window.location.replace('/');
+        toast.success("Signup Successful! Welcome to Trend. 🥳");
+        setTimeout(() => window.location.replace('/'), 1000);
       } else {
         setError(response.data.error);
+        toast.error(response.data.error || "Signup failed");
       }
     } catch (err) {
-      setError(err.response?.data?.error || "An error occurred. Please try again.");
+      const msg = err.response?.data?.error || "An error occurred. Please try again.";
+      setError(msg);
+      toast.error(msg);
     }
   };
 

@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import api from "../api/axios";
+import toast from 'react-hot-toast';
 
 export const Shopcontext = createContext(null);
 
@@ -18,9 +19,12 @@ const Shopcontextprovider = (props) => {
   const checkAuth = async () => {
     try {
       const response = await api.get('/check-auth');
-      if (response.data.success) {
+      if (response.data.authenticated) {
         setIsLoggedIn(true);
         fetchCart();
+      } else {
+        setIsLoggedIn(false);
+        setCartItems(getDefaultCart());
       }
     } catch (err) {
       // 401 is expected if not logged in; don't clutter the console with an error
@@ -50,10 +54,10 @@ const Shopcontextprovider = (props) => {
   // Add to cart
   const addToCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+    toast.success("Added to cart! 🛒");
 
     if (isLoggedIn) {
       api.post('/addtocart', { itemId })
-        .then((res) => console.log("✅ Backend response:", res.data))
         .catch((err) => console.error("❌ Add to cart error:", err));
     }
   };
@@ -61,6 +65,7 @@ const Shopcontextprovider = (props) => {
   // Remove from cart
   const removeFromCart = (itemId) => {
     setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+    toast.error("Removed from cart");
     if (isLoggedIn) {
       api.post('/removefromcart', { itemId })
         .catch((err) => console.error("❌ Remove from cart error:", err));

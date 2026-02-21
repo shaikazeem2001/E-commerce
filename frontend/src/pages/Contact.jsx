@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './css/Contact.css';
 import { Send, Loader2 } from '../components/Icons';
 import api from '../api/axios';
+import toast from 'react-hot-toast';
 
 const Contact = () => {
     const [loading, setLoading] = useState(false);
@@ -17,14 +18,14 @@ const Contact = () => {
         try {
             const response = await api.post('/contact', formData);
             if (response.data.success) {
-                alert('Message sent! Azeem will get back to you soon. 🚀');
+                toast.success('Message sent! Azeem will get back to you soon. 🚀');
                 setFormData({ name: '', email: '', message: '' });
             } else {
-                alert('Failed to send message. Please try again later.');
+                toast.error('Failed to send message. Please try again later.');
             }
         } catch (err) {
             console.error("Submission error:", err);
-            alert('Something went wrong. Please check your connection.');
+            toast.error('Something went wrong. Please check your connection.');
         } finally {
             setLoading(false);
         }

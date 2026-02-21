@@ -75,10 +75,13 @@ const logout = async (req, res) => {
 
 const check_auth = async (req, res) => {
   try {
+    if (!req.user) {
+      return res.json({ success: true, authenticated: false });
+    }
     const user = await User.findById(req.user.id).select('-password');
-    res.json({ success: true, user });
+    res.json({ success: true, authenticated: true, user });
   } catch (error) {
-    res.status(500).json({ success: false, error: error.message });
+    res.json({ success: false, authenticated: false, error: error.message });
   }
 };
 

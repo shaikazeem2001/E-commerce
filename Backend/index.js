@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 const path = require("path");
 const multer = require("multer");
 const cloudinary = require('cloudinary').v2;
@@ -10,7 +11,7 @@ const connectDB = require('./config/db');
 // Routes
 const userRoutes = require('./route/user.routes');
 const productRoutes = require('./route/product.routes');
-const contactRoutes = require('./route/contact.routes');
+const { router: contactRoutes } = require('./route/contact.routes');
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -19,6 +20,7 @@ const port = process.env.PORT || 4000;
 connectDB();
 
 // ✅ Middleware
+app.use(compression());
 app.use(cookieParser());
 app.use(cors({
   origin: (origin, callback) => {
@@ -84,9 +86,10 @@ app.post("/upload", upload.single("image"), async (req, res) => {
 });
 
 // ✅ Modular Routes
+app.get('/health', (req, res) => res.json({ status: 'ok', time: new Date().toISOString() }));
+app.use('/', contactRoutes);
 app.use('/', userRoutes);
 app.use('/', productRoutes);
-app.use('/contact', contactRoutes);
 
 // ✅ Start server
 app.listen(port, () => console.log(`🚀 Server running on port ${port}`));

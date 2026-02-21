@@ -6,6 +6,8 @@ import hero_img from '../assets/hero_image.png'
 import AnimatedText from "../AnimatedText";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
+import ProgressiveImage from "../Skeleton/ProgressiveImage";
+
 const Hero = () => {
   const heroRef = useRef(null);
   const leftRef = useRef(null);
@@ -53,7 +55,11 @@ const Hero = () => {
         </div>
       </div>
       <div className="hero-right" ref={rightRef}>
-        <img src={hero_img} alt="Hero" />
+        <ProgressiveImage
+          src={hero_img}
+          alt="Hero"
+          skeletonHeight="600px"
+        />
       </div>
     </div>
   );

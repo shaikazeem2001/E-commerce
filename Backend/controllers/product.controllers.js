@@ -33,7 +33,7 @@ const remove_product = async (req, res) => {
 
 const get_all_products = async (req, res) => {
   try {
-    const allProducts = await Product.find({});
+    const allProducts = await Product.find({}).select('id name image category new_price old_price');
     res.json(allProducts);
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
@@ -42,8 +42,8 @@ const get_all_products = async (req, res) => {
 
 const get_new_collections = async (req, res) => {
   try {
-    const products = await Product.find({});
-    res.json(products.slice(-8));
+    const products = await Product.find({}).sort({ _id: -1 }).limit(8).select('id name image new_price old_price');
+    res.json(products);
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -51,8 +51,8 @@ const get_new_collections = async (req, res) => {
 
 const get_popular_in_women = async (req, res) => {
   try {
-    const products = await Product.find({ category: "women" });
-    res.json(products.slice(0, 4));
+    const products = await Product.find({ category: "women" }).limit(4).select('id name image new_price old_price');
+    res.json(products);
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
