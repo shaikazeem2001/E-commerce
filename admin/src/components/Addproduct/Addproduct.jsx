@@ -18,7 +18,7 @@ const Addproduct = () => {
 
   const add_product = async () => {
     try {
-      const baseUrl = "http://localhost:4000";
+      const baseUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
       console.log("Uploading image...");
 
       const formdata = new FormData();

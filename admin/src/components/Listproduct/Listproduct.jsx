@@ -3,7 +3,7 @@ import "./Listproduct.css";
 import cross_icon from '../../assets/cross_icon.png'
 const Listproduct = () => {
   const [allproducts, setAllProducts] = useState([]);
-  const baseUrl = "http://localhost:4000";
+  const baseUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:4000";
   const fetchinfo = async () => {
     await fetch(`${baseUrl}/allproducts`)
       .then((res) => res.json())
