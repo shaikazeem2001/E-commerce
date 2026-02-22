@@ -42,8 +42,10 @@ const ShopCategory = (props) => {
   };
 
   return (
-    <div className="shopcategory">
-      <img className="shopcategory-banner" src={props.banner} alt="" />
+    <div className="shopcategory container">
+      <div className="shopcategory-banner-container">
+        <img className="shopcategory-banner" src={props.banner} alt="" />
+      </div>
 
       <div className="shopcategory-header">
         <p>
@@ -79,8 +81,8 @@ const ShopCategory = (props) => {
                   onChange={(e) => setTempPriceRange(Number(e.target.value))}
                 />
                 <div className="filter-actions">
-                  <button className="apply-btn" onClick={applyPriceFilter}>Apply</button>
-                  <button className="cancel-btn" onClick={resetPriceFilter}>Cancel</button>
+                  <button className="apply-btn" onClick={applyPriceFilter}>Apply Filters</button>
+                  <button className="cancel-btn" onClick={resetPriceFilter}>Reset</button>
                 </div>
               </div>
             </div>
@@ -100,7 +102,15 @@ const ShopCategory = (props) => {
           />
         ))}
       </div>
-      {filteredProducts.length === 0 && <p className="no-products">No products found matching your filters.</p>}
+      {filteredProducts.length === 0 && (
+        <div className="no-products-container">
+          <div className="no-products-content">
+            <p className="no-products-title">No items found</p>
+            <p className="no-products-msg">We couldn't find any products matching your current filters. Try adjusting your price range or sorting options.</p>
+            <button className="reset-btn-inline" onClick={resetPriceFilter}>Clear all filters</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

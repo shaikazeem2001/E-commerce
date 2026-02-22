@@ -32,15 +32,17 @@ const Offers = () => {
   }, []);
 
   return (
-    <div className='offers' ref={sectionRef}>
-      <div className="offers-left" ref={leftRef}>
-        <h1>Exclusive</h1>
-        <h1>Offers for you</h1>
-        <p>ONLY FOR BEST SELLERS PRODUCTS</p>
-        <button>Check Now</button>
-      </div>
-      <div className="offers-right" ref={rightRef}>
-        <img src={exculsive_image} alt="Exclusive Offers" />
+    <div className='offers-section'>
+      <div className="offers container" ref={sectionRef}>
+        <div className="offers-left" ref={leftRef}>
+          <h1>Exclusive</h1>
+          <h1>Offers for you</h1>
+          <p>ONLY FOR BEST SELLERS PRODUCTS</p>
+          <button className="offers-btn">Check Now</button>
+        </div>
+        <div className="offers-right" ref={rightRef}>
+          <img src={exculsive_image} alt="Exclusive Offers" />
+        </div>
       </div>
     </div>
   )

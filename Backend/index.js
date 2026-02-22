@@ -12,6 +12,7 @@ const connectDB = require('./config/db');
 const userRoutes = require('./route/user.routes');
 const productRoutes = require('./route/product.routes');
 const { router: contactRoutes } = require('./route/contact.routes');
+const paymentRoutes = require('./route/payment.routes');
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -21,8 +22,7 @@ connectDB();
 
 // ✅ Logging Middleware (Move to top for more visibility)
 app.use((req, res, next) => {
-  console.log(`\n🔍 Incoming Request: ${req.method} ${req.path}`);
-  console.log(`🌐 Origin: ${req.headers.origin || 'No Origin'}`);
+
   next();
 });
 
@@ -92,6 +92,7 @@ app.get('/health', (req, res) => res.json({ status: 'ok', time: new Date().toISO
 app.use('/', contactRoutes);
 app.use('/', userRoutes);
 app.use('/', productRoutes);
+app.use('/api/payment', paymentRoutes);
 
 // ✅ Start server
 app.listen(port, () => console.log(`🚀 Server running on port ${port}`));

@@ -1,17 +1,27 @@
 .shopcategory {
+  margin: 40px auto;
+}
+
+.shopcategory-banner-container {
   width: 100%;
-  max-width: 1200px;
-  margin: 30px auto;
-  padding: 0 20px; /* keeps items from touching edges */
-  box-sizing: border-box;
-  overflow-x: hidden;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+  aspect-ratio: 16 / 5;
 }
 
 .shopcategory-banner {
   display: block;
   width: 100%;
-  border-radius: 10px;
+  height: 100%;
   object-fit: cover;
+  object-position: center bottom;
+  transition: transform var(--transition-normal);
+}
+
+.shopcategory-banner-container:hover .shopcategory-banner {
+  transform: scale(1.02);
 }
 
 .shopcategory-header {
@@ -56,17 +66,23 @@
 
 .filter-dropdown {
   position: absolute;
-  top: calc(100% + 10px);
+  top: calc(100% + 15px);
   right: 0;
-  width: 320px;
-  background: var(--surface-color);
+  width: 340px;
+  background: var(--background-color);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 25px;
+  border-radius: 16px;
+  padding: 30px;
   box-shadow: var(--shadow-lg);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 24px;
+  animation: fadeInDown 0.3s ease;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .filter-group label {
@@ -134,11 +150,47 @@
   margin-top: 20px;
 }
 
-.no-products {
-  text-align: center;
+.no-products-container {
+  width: 100%;
   padding: 100px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--surface-color);
+  border-radius: var(--radius-md);
+  margin: 40px 0;
+}
+
+.no-products-content {
+  text-align: center;
+  max-width: 400px;
+}
+
+.no-products-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.no-products-msg {
   color: var(--text-muted);
-  font-size: 1.2rem;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.reset-btn-inline {
+  background: var(--primary-color);
+  color: white;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  transition: all var(--transition-fast);
+}
+
+.reset-btn-inline:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
 }
 
 @media (max-width: 600px) {

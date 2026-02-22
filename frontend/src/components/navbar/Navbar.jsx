@@ -51,47 +51,49 @@ const Navbar = () => {
 
   return (
     <div className='navbar'>
-      <div className="nav-logo">
-        <Link to='/'><img src={logo} alt="Trend Logo" /></Link>
-        <Link to='/' style={{ textDecoration: 'none' }}><p>Trend</p></Link>
-      </div>
+      <div className="container nav-content">
+        <div className="nav-logo">
+          <Link to='/'><img src={logo} alt="Trend Logo" /></Link>
+          <Link to='/' style={{ textDecoration: 'none' }}><p>Trend</p></Link>
+        </div>
 
-      <div className='nav-dropdown' onClick={dropdown_toggle}>
-        {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
-      </div>
+        <div className='nav-dropdown' onClick={dropdown_toggle}>
+          {isMenuOpen ? <X size={30} /> : <Menu size={30} />}
+        </div>
 
-      <ul ref={menuRef} className="nav-menu">
-        <li onClick={() => setMenu('shop')}>
-          <Link style={{ textDecoration: 'none' }} to='/' className="text-hover">Shop</Link>
-          {menu === 'shop' ? <hr /> : null}
-        </li>
-        <li onClick={() => setMenu('mens')}>
-          <Link style={{ textDecoration: 'none' }} to='/mens' className="text-hover">Mens</Link>
-          {menu === 'mens' ? <hr /> : null}
-        </li>
-        <li onClick={() => setMenu('womens')}>
-          <Link style={{ textDecoration: 'none' }} to='/women' className="text-hover">Women</Link>
-          {menu === 'womens' ? <hr /> : null}
-        </li>
-        <li onClick={() => setMenu('kids')}>
-          <Link style={{ textDecoration: 'none' }} to='/kids' className="text-hover">Kids</Link>
-          {menu === 'kids' ? <hr /> : null}
-        </li>
-      </ul>
+        <ul ref={menuRef} className="nav-menu">
+          <li onClick={() => setMenu('shop')}>
+            <Link style={{ textDecoration: 'none' }} to='/' className="text-hover">Shop</Link>
+            {menu === 'shop' ? <hr /> : null}
+          </li>
+          <li onClick={() => setMenu('mens')}>
+            <Link style={{ textDecoration: 'none' }} to='/mens' className="text-hover">Mens</Link>
+            {menu === 'mens' ? <hr /> : null}
+          </li>
+          <li onClick={() => setMenu('womens')}>
+            <Link style={{ textDecoration: 'none' }} to='/women' className="text-hover">Women</Link>
+            {menu === 'womens' ? <hr /> : null}
+          </li>
+          <li onClick={() => setMenu('kids')}>
+            <Link style={{ textDecoration: 'none' }} to='/kids' className="text-hover">Kids</Link>
+            {menu === 'kids' ? <hr /> : null}
+          </li>
+        </ul>
 
-      <div className="nav-actions">
-        <button className="theme-toggle" onClick={toggleTheme}>
-          {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-        </button>
+        <div className="nav-actions">
+          <button className="theme-toggle" onClick={toggleTheme}>
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
 
-        <div className="nav-login-cart">
-          {isLoggedIn ?
-            <button className="logout-btn" onClick={handleLogout}><LogOut size={18} /> Logout</button> :
-            <Link to='/login'><button className="login-btn"><LogIn size={18} /> Login</button></Link>
-          }
-          <div className="cart-container">
-            <Link to='/cart'><ShoppingCart size={28} className="cart-icon" /></Link>
-            <div className="nav-cart-count">{getTotalCartItems()}</div>
+          <div className="nav-login-cart">
+            {isLoggedIn ?
+              <button className="logout-btn" onClick={handleLogout}><LogOut size={18} /> Logout</button> :
+              <Link to='/login'><button className="login-btn"><LogIn size={18} /> Login</button></Link>
+            }
+            <div className="cart-container">
+              <Link to='/cart'><ShoppingCart size={28} className="cart-icon" /></Link>
+              <div className="nav-cart-count">{getTotalCartItems()}</div>
+            </div>
           </div>
         </div>
       </div>

@@ -38,8 +38,9 @@ const Popular = () => {
   }, [popular]);
 
   return (
-    <div className="popular">
+    <div className="popular container">
       <h1>POPULAR IN WOMEN</h1>
+      <hr className="title-hr" />
 
       <div className="popularitem" ref={sectionRef}>
         {popular.map((item, i) => (

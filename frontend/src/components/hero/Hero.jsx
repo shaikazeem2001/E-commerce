@@ -39,27 +39,29 @@ const Hero = () => {
 
   return (
     <div className="hero" ref={heroRef}>
-      <div className="hero-left" ref={leftRef}>
-        <h2><AnimatedText text="NEW ARRIVALS ONLY" /></h2>
-        <div className="hero-text-container">
-          <div className="hero-hand-icon">
-            <p><AnimatedText text="new" /></p>
-            <img src={hand_icon} alt="Hand Icon" />
+      <div className="container hero-content">
+        <div className="hero-left" ref={leftRef}>
+          <h2><AnimatedText text="NEW ARRIVALS ONLY" /></h2>
+          <div className="hero-text-container">
+            <div className="hero-hand-icon">
+              <p><AnimatedText text="new" /></p>
+              <img src={hand_icon} alt="Hand Icon" />
+            </div>
+            <p><AnimatedText text="collections" /></p>
+            <p><AnimatedText text="foreveryone" /></p>
           </div>
-          <p><AnimatedText text="collections" /></p>
-          <p><AnimatedText text="foreveryone" /></p>
+          <div className="hero-latest-btn">
+            <Link to='/mens'> <div className="text-hover">Latest Collection</div></Link>
+            <img src={arrow_icon} alt="Arrow Icon" />
+          </div>
         </div>
-        <div className="hero-latest-btn">
-          <Link to='/mens'> <div className="text-hover">Latest Collection</div></Link>
-          <img src={arrow_icon} alt="Arrow Icon" />
+        <div className="hero-right" ref={rightRef}>
+          <ProgressiveImage
+            src={hero_img}
+            alt="Hero"
+            skeletonHeight="600px"
+          />
         </div>
-      </div>
-      <div className="hero-right" ref={rightRef}>
-        <ProgressiveImage
-          src={hero_img}
-          alt="Hero"
-          skeletonHeight="600px"
-        />
       </div>
     </div>
   );

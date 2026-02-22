@@ -39,7 +39,7 @@ const Newcollections = () => {
   }, [new_collections]);
   return (
     <div>
-      <div className="new-collections">
+      <div className="new-collections container">
         <h1>NEW COLLECTIONS</h1>
         <hr />
         <div className="collections" ref={sectionRef}>
