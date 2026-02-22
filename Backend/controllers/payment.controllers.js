@@ -1,8 +1,17 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
 const createPaymentIntent = async (req, res) => {
     try {
         const { products } = req.body;
+
+        const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
+        if (!stripeSecretKey) {
+            console.error("❌ MISSING STRIPE_SECRET_KEY in environment variables!");
+            return res.status(500).json({ 
+                success: false, 
+                error: "Payment service is currently unavailable (Missing API Key). Please check server logs." 
+            });
+        }
+
+        const stripe = require('stripe')(stripeSecretKey);
 
         if (!products || products.length === 0) {
             return res.status(400).json({ success: false, error: "No products in cart" });
