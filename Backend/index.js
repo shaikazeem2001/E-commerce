@@ -19,19 +19,27 @@ const port = process.env.PORT || 4000;
 // ✅ Connect Database
 connectDB();
 
+// ✅ Logging Middleware (Move to top for more visibility)
+app.use((req, res, next) => {
+  console.log(`\n🔍 Incoming Request: ${req.method} ${req.path}`);
+  console.log(`🌐 Origin: ${req.headers.origin || 'No Origin'}`);
+  next();
+});
+
 // ✅ Middleware
 app.use(compression());
 app.use(cookieParser());
 app.use(cors({
   origin: (origin, callback) => {
     const allowed = [
-      "*",
       "http://localhost:5173",
+      "http://127.0.0.1:5173",
       "https://e-commerce2-rust.vercel.app"
     ];
-    if (!origin || allowed.includes(origin) || origin.endsWith(".vercel.app")) {
+    if (!origin || allowed.includes(origin) || origin.endsWith(".vercel.app") || origin.includes("localhost:")) {
       callback(null, true);
     } else {
+      console.log(`❌ CORS Blocked Origin: ${origin}`);
       callback(new Error("CORS not allowed check index.js"));
     }
   },
@@ -47,12 +55,6 @@ cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
-});
-
-// Log requests
-app.use((req, res, next) => {
-  console.log(`\n🔍 Incoming Request: ${req.method} ${req.path}`);
-  next();
 });
 
 // ✅ Multer setup (temporary local storage)
