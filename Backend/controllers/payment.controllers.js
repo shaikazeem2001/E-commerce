@@ -1,6 +1,6 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-const createCheckoutSession = async (req, res) => {
+const createPaymentIntent = async (req, res) => {
     try {
         const { products } = req.body;
 
@@ -8,31 +8,25 @@ const createCheckoutSession = async (req, res) => {
             return res.status(400).json({ success: false, error: "No products in cart" });
         }
 
-        const line_items = products.map((product) => ({
-            price_data: {
-                currency: 'usd',
-                product_data: {
-                    name: product.name,
-                    images: [product.image],
-                },
-                unit_amount: Math.round(product.new_price * 100), // Stripe expects amounts in cents
-            },
-            quantity: product.quantity,
-        }));
+        // Calculate total amount in cents
+        const amount = products.reduce((total, product) => {
+            return total + (product.new_price * product.quantity);
+        }, 0);
 
-        const session = await stripe.checkout.sessions.create({
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: Math.round(amount * 100),
+            currency: 'usd',
             payment_method_types: ['card'],
-            line_items: line_items,
-            mode: 'payment',
-            success_url: `http://localhost:5173/checkout?success=true`,
-            cancel_url: `http://localhost:5173/checkout?canceled=true`,
         });
 
-        res.json({ success: true, sessionId: session.id, url: session.url });
+        res.json({ 
+            success: true, 
+            clientSecret: paymentIntent.client_secret 
+        });
     } catch (error) {
-        console.error("❌ Stripe Session Error:", error);
+        console.error("❌ Stripe PaymentIntent Error:", error);
         res.status(500).json({ success: false, error: error.message });
     }
 };
 
-module.exports = { createCheckoutSession };
+module.exports = { createPaymentIntent };

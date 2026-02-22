@@ -5,14 +5,144 @@ import "./css/Checkout.css";
 import api from "../api/axios";
 import toast from "react-hot-toast";
 import { Shopcontext } from "../context/Shopcontext";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+    Elements,
+    CardElement,
+    useStripe,
+    useElements,
+} from "@stripe/react-stripe-js";
+
+// Initialize Stripe with public key from env or provided directly for testing
+const stripePromise = loadStripe("pk_test_51Qr48xR7l8q7Y7Q7..."); // This should ideally be in .env
+
+const PaymentForm = ({ formData, productsToPay, amount, onSuccess }) => {
+    const stripe = useStripe();
+    const elements = useElements();
+    const [loading, setLoading] = useState(false);
+    const { cartItems, all_product, getTotalCartAmount, setCartItems } = useContext(Shopcontext);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!stripe || !elements) return;
+
+        setLoading(true);
+
+        try {
+            // 1. Create PaymentIntent on the backend
+            const { data } = await api.post("/api/payment/create-payment-intent", {
+                products: productsToPay,
+            });
+
+            if (!data.success) {
+                throw new Error(data.error || "Failed to create payment intent");
+            }
+
+            // 2. Confirm the payment on the frontend
+            const result = await stripe.confirmCardPayment(data.clientSecret, {
+                payment_method: {
+                    card: elements.getElement(CardElement),
+                    billing_details: {
+                        name: formData.fullName,
+                        email: formData.email,
+                        address: {
+                            line1: formData.address,
+                            city: formData.city,
+                            postal_code: formData.zipCode,
+                        },
+                    },
+                },
+            });
+
+            if (result.error) {
+                toast.error(result.error.message);
+            } else {
+                if (result.paymentIntent.status === "succeeded") {
+                    toast.success("Payment successful! 🍔");
+                    // Clear cart on success
+                    const emptyCart = {};
+                    for (let i = 0; i <= 300; i++) emptyCart[i] = 0;
+                    setCartItems(emptyCart);
+                    onSuccess();
+                }
+            }
+        } catch (error) {
+            console.error("Payment error:", error);
+            toast.error(error.message || "Something went wrong with the payment.");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <form className="checkout-form card" onSubmit={handleSubmit}>
+            <button
+                type="button"
+                className="text-btn back-btn"
+                onClick={() => onSuccess(false)}
+            >
+                <ArrowLeft size={16} /> Back
+            </button>
+            <h1>
+                <CreditCard /> Payment Method
+            </h1>
+            <p className="payment-desc">
+                Enter your card details securely. Your payment is processed by Stripe.
+            </p>
+
+            <div className="card-element-container">
+                <label className="card-label">Card Details</label>
+                <CardElement
+                    options={{
+                        style: {
+                            base: {
+                                fontSize: "16px",
+                                color: "#1a1a1a",
+                                "::placeholder": {
+                                    color: "#6b7280",
+                                },
+                            },
+                            invalid: {
+                                color: "#ef4444",
+                            },
+                        },
+                    }}
+                />
+            </div>
+
+            <div className="order-summary card shadow-none bg-surface">
+                <h3>Order Summary</h3>
+                <div className="summary-row">
+                    <p>Subtotal:</p>
+                    <span>${amount}</span>
+                </div>
+                <div className="summary-row">
+                    <p>Shipping:</p>
+                    <span>Free</span>
+                </div>
+                <hr />
+                <div className="summary-row total">
+                    <p>Total:</p>
+                    <span>${amount}</span>
+                </div>
+            </div>
+
+            <button type="submit" className="pay-btn primary-btn" disabled={loading || !stripe}>
+                {loading ? <Loader2 className="spinner" /> : `Pay $${amount}`}
+            </button>
+
+            <div className="secure-badge">
+                <ShieldCheck size={16} /> Secure Encrypted Payment via Stripe
+            </div>
+        </form>
+    );
+};
 
 const Checkout = () => {
     const { getTotalCartAmount, cartItems, all_product } = useContext(Shopcontext);
     const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
     const [step, setStep] = useState(1); // 1: Shipping, 2: Payment, 3: Success
-
-    const [paymentStatus, setPaymentStatus] = useState(null); // 'success', 'canceled'
     const [formData, setFormData] = useState({
         fullName: "",
         email: "",
@@ -21,17 +151,15 @@ const Checkout = () => {
         zipCode: ""
     });
 
-    useEffect(() => {
-        const query = new URLSearchParams(window.location.search);
-        if (query.get("success")) {
-            setStep(3);
-            setPaymentStatus('success');
-        }
-        if (query.get("canceled")) {
-            setPaymentStatus('canceled');
-            toast.error("Payment canceled. You can try again.");
-        }
-    }, []);
+    const productsToPay = Object.keys(cartItems)
+        .filter((itemId) => cartItems[itemId] > 0)
+        .map((itemId) => {
+            const item = all_product.find((p) => p.id === Number(itemId));
+            return {
+                ...item,
+                quantity: cartItems[itemId],
+            };
+        });
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,35 +170,11 @@ const Checkout = () => {
         setStep(2);
     };
 
-    const handlePayment = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-
-        try {
-            // Prepare products for Stripe
-            const productsToPay = Object.keys(cartItems).filter(itemId => cartItems[itemId] > 0).map(itemId => {
-                const item = all_product.find(p => p.id === Number(itemId));
-                return {
-                    ...item,
-                    quantity: cartItems[itemId]
-                };
-            });
-
-            const response = await api.post('/api/payment/create-checkout-session', {
-                products: productsToPay
-            });
-
-            if (response.data.success && response.data.url) {
-                // Redirect to Stripe Checkout
-                window.location.href = response.data.url;
-            } else {
-                toast.error("Failed to initiate payment. Please try again.");
-                setLoading(false);
-            }
-        } catch (error) {
-            console.error("Payment error:", error);
-            toast.error("Something went wrong with the payment system.");
-            setLoading(false);
+    const handleSuccess = (toSuccess = true) => {
+        if (toSuccess) {
+            setStep(3);
+        } else {
+            setStep(1);
         }
     };
 
@@ -133,47 +237,14 @@ const Checkout = () => {
                 )}
 
                 {step === 2 && (
-                    <div className="checkout-form card">
-                        <button type="button" className="text-btn back-btn" onClick={() => setStep(1)}><ArrowLeft size={16} /> Back</button>
-                        <h1><CreditCard /> Payment Method</h1>
-                        <p className="payment-desc">You will be redirected to Stripe's secure payment gateway to complete your purchase.</p>
-
-                        <div className="payment-methods">
-                            <div className="payment-method active">
-                                <CreditCard size={24} />
-                                <span>Credit / Debit Card (Stripe)</span>
-                                <div className="payment-icons">
-                                    <img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa" />
-                                    <img src="https://img.icons8.com/color/48/000000/mastercard.png" alt="Mastercard" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="order-summary card shadow-none bg-surface">
-                            <h3>Order Summary</h3>
-                            <div className="summary-row">
-                                <p>Subtotal:</p>
-                                <span>${getTotalCartAmount()}</span>
-                            </div>
-                            <div className="summary-row">
-                                <p>Shipping:</p>
-                                <span>Free</span>
-                            </div>
-                            <hr />
-                            <div className="summary-row total">
-                                <p>Total:</p>
-                                <span>${getTotalCartAmount()}</span>
-                            </div>
-                        </div>
-
-                        <button onClick={handlePayment} className="pay-btn primary-btn" disabled={loading}>
-                            {loading ? <Loader2 className="spinner" /> : `Proceed to Payment ($${getTotalCartAmount()})`}
-                        </button>
-
-                        <div className="secure-badge">
-                            <ShieldCheck size={16} /> Secure Encrypted Payment via Stripe
-                        </div>
-                    </div>
+                    <Elements stripe={stripePromise}>
+                        <PaymentForm
+                            formData={formData}
+                            productsToPay={productsToPay}
+                            amount={getTotalCartAmount()}
+                            onSuccess={handleSuccess}
+                        />
+                    </Elements>
                 )}
 
                 {step === 3 && (
