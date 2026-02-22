@@ -39,8 +39,24 @@ const Shopcontextprovider = (props) => {
   // Fetch all products
   useEffect(() => {
     api.get('/allproducts')
-      .then((res) => setall_product(res.data))
-      .catch((err) => console.error("❌ Fetch products error:", err));
+      .then((res) => {
+        // If backend returns empty, fallback to local all_product for demo purposes
+        if (res.data && res.data.length > 0) {
+          setall_product(res.data);
+        } else {
+          console.warn("⚠️ Backend returned 0 products, falling back to local asset data.");
+          import("../assets/Assets/Frontend_Assets/all_product").then(module => {
+            setall_product(module.default);
+          });
+        }
+      })
+      .catch((err) => {
+        console.error("❌ Fetch products error:", err);
+        // Fallback on error too
+        import("../assets/Assets/Frontend_Assets/all_product").then(module => {
+          setall_product(module.default);
+        });
+      });
 
     checkAuth();
   }, []);

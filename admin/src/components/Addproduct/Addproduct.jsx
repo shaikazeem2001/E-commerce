@@ -18,14 +18,15 @@ const Addproduct = () => {
 
   const add_product = async () => {
     try {
+      const baseUrl = "http://localhost:4000";
       console.log("Uploading image...");
 
       const formdata = new FormData();
-      formdata.append("image", Image); 
+      formdata.append("image", Image);
 
-      const uploadResp = await fetch("https://e-commerce-qb3u.onrender.com/upload", {
+      const uploadResp = await fetch(`${baseUrl}/upload`, {
         method: "POST",
-        body: formdata, 
+        body: formdata,
       });
 
       const responsedata = await uploadResp.json();
@@ -39,7 +40,7 @@ const Addproduct = () => {
 
         console.log("Adding product:", product);
 
-        const addResp = await fetch("https://e-commerce-qb3u.onrender.com/addproduct", {
+        const addResp = await fetch(`${baseUrl}/addproduct`, {
           method: "POST",
           headers: {
             Accept: "application/json",
